@@ -1,6 +1,7 @@
 package entity;
 
 import java.awt.Graphics2D;
+import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 
@@ -16,6 +17,12 @@ public class Player extends Entity {
     public Player(GamePanel gp, KeyHandler keyH) {
         this.gp = gp;
         this.keyH = keyH;
+
+        solidArea = new Rectangle();
+        solidArea.x = (int) Math.round(2.7 * gp.scale);
+        solidArea.y = solidArea.x * 2;
+        solidArea.width = solidArea.x * 4;
+        solidArea.height = solidArea.width;
 
         setDefaultValues();
         getPlayerImage();
@@ -50,19 +57,36 @@ public class Player extends Entity {
             keyH.leftPressed == true || keyH.rightPressed == true) {
                 if (keyH.upPressed == true) {
                     direction = "up";
-                    y -= speed;
                 }
                 else if (keyH.downPressed == true) {
                     direction = "down";
-                    y += speed;
                 }
                 else if (keyH.leftPressed == true) {
                     direction = "left";
-                    x -= speed;
                 }
                 else if (keyH.rightPressed == true) {
                     direction = "right";
-                    x += speed;
+                }
+
+                collisionOn = false;
+                gp.cChecker.checkTile(this);
+                gp.cChecker.checkBoundary(this);
+
+                if (collisionOn == false) {
+                    switch (direction) {
+                        case "up":
+                            y -= speed;
+                            break;
+                        case "down":
+                            y += speed;
+                            break;
+                        case "left":
+                            x -= speed;
+                            break;
+                        case "right":
+                            x += speed;
+                            break;
+                    }
                 }
         
                 // walking animation
