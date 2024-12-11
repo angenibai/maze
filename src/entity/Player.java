@@ -21,7 +21,7 @@ public class Player extends Entity {
         solidArea = new Rectangle();
         solidArea.x = (int) Math.round(2.7 * gp.scale);
         solidArea.y = solidArea.x * 2;
-        solidArea.width = solidArea.x * 4;
+        solidArea.width = (int) Math.round(3.5 * solidArea.x);
         solidArea.height = solidArea.width;
 
         setDefaultValues();
@@ -29,8 +29,8 @@ public class Player extends Entity {
     }
 
     public void setDefaultValues() {
-        x = 100;
-        y = 100;
+        x = 0;
+        y = 2 * gp.tileSize - gp.tileSize / 10;
         speed = 4;
         direction = "down";
     }
@@ -57,35 +57,34 @@ public class Player extends Entity {
             keyH.leftPressed == true || keyH.rightPressed == true) {
                 if (keyH.upPressed == true) {
                     direction = "up";
-                }
-                else if (keyH.downPressed == true) {
+                } else if (keyH.downPressed == true) {
                     direction = "down";
-                }
-                else if (keyH.leftPressed == true) {
+                } else if (keyH.leftPressed == true) {
                     direction = "left";
-                }
-                else if (keyH.rightPressed == true) {
+                } else if (keyH.rightPressed == true) {
                     direction = "right";
                 }
 
                 collisionOn = false;
-                gp.cChecker.checkTile(this);
                 gp.cChecker.checkBoundary(this);
-
+                
                 if (collisionOn == false) {
-                    switch (direction) {
-                        case "up":
-                            y -= speed;
-                            break;
-                        case "down":
-                            y += speed;
-                            break;
-                        case "left":
-                            x -= speed;
-                            break;
-                        case "right":
-                            x += speed;
-                            break;
+                    gp.cChecker.checkTile(this);
+                    if (collisionOn == false) {
+                        switch (direction) {
+                            case "up":
+                                y -= speed;
+                                break;
+                            case "down":
+                                y += speed;
+                                break;
+                            case "left":
+                                x -= speed;
+                                break;
+                            case "right":
+                                x += speed;
+                                break;
+                        }
                     }
                 }
         

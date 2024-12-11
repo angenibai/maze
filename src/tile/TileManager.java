@@ -15,9 +15,10 @@ public class TileManager {
     public Tile[] tile;
     public int mapTileNum[][];
 
-    private int GRASS = 0;
-    private int WALL = 1;
-    private int WATER = 2;
+    private final int GRASS = 0;
+    private final int TREE = 1;
+    private final int WATER = 2;
+    private final int END = 3;
 
     public TileManager(GamePanel gp) {
         this.gp = gp;
@@ -26,21 +27,26 @@ public class TileManager {
         mapTileNum = new int[gp.maxScreenCol][gp.maxScreenRow];
 
         getTileImage();
-        loadMap("/maps/map01.txt");
+        loadMap("/maps/map02.txt");
     }
 
     public void getTileImage() {
         try {
             tile[GRASS] = new Tile();
-            tile[GRASS].image = ImageIO.read(getClass().getResourceAsStream("/tiles/grass.png"));
+            tile[GRASS].image = ImageIO.read(getClass().getResourceAsStream("/tiles/grass01.png"));
 
-            tile[WALL] = new Tile();
-            tile[WALL].image = ImageIO.read(getClass().getResourceAsStream("/tiles/wall.png"));
-            tile[WALL].collision = true;
+            tile[TREE] = new Tile();
+            tile[TREE].image = ImageIO.read(getClass().getResourceAsStream("/tiles/tree.png"));
+            tile[TREE].collision = true;
 
             tile[WATER] = new Tile();
             tile[WATER].image = ImageIO.read(getClass().getResourceAsStream("/tiles/water.png"));
             tile[WATER].collision = true;
+
+            tile[END] = new Tile();
+            tile[END].image = ImageIO.read(getClass().getResourceAsStream("/tiles/floor01.png"));
+            tile[END].collision = false;
+
 
         } catch(IOException e) {
             e.printStackTrace();
