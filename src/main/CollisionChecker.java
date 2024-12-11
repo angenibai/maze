@@ -73,26 +73,22 @@ public class CollisionChecker {
 
 
     public void checkBoundary(Entity entity) {
-        // TODO: refactor position calculation
-        int entityLeftX = entity.x + entity.solidArea.x;
-        int entityRightX = entityLeftX + entity.solidArea.width;
-        int entityTopY = entity.y + entity.solidArea.y;
-        int entityBottomY = entityTopY + entity.solidArea.height;
+        Map<String, Integer> pos = calculatePosition(entity);
 
         boolean boundaryCollision = false;
 
         switch (entity.direction) {
             case "up":
-                boundaryCollision = entityTopY - entity.speed < 0;
+                boundaryCollision = pos.get("topY") - entity.speed < 0;
                 break;
             case "down":
-                boundaryCollision = entityBottomY + entity.speed >= gp.screenHeight;
+                boundaryCollision = pos.get("bottomY") + entity.speed >= gp.screenHeight;
                 break;
             case "left":
-                boundaryCollision = entityLeftX - entity.speed < 0;
+                boundaryCollision = pos.get("leftX") - entity.speed < 0;
                 break;
             case "right":
-                boundaryCollision = entityRightX + entity.speed >= gp.screenWidth;
+                boundaryCollision = pos.get("rightX") + entity.speed >= gp.screenWidth;
                 break;
         }
 
@@ -110,6 +106,16 @@ public class CollisionChecker {
         tileNums[2] = gp.tileM.mapTileNum[posIdx(pos.get("leftX"))][posIdx(pos.get("bottomY"))];
         tileNums[3] = gp.tileM.mapTileNum[posIdx(pos.get("rightX"))][posIdx(pos.get("bottomY"))];
 
-        // TODO: check whether any of these tiles are end tiles
+        boolean end = false;
+        for (int tileNum : tileNums) {
+            if (gp.tileM.tile[tileNum].end) {
+                end = true;
+                break;
+            }
+        }
+
+        if (end && gp.gameState == GameState.PLAY) {
+            gp.gameState = GameState.END;
+        }
     }
 }

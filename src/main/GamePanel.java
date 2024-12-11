@@ -26,7 +26,7 @@ public class GamePanel extends JPanel implements Runnable {
     final int FPS = 60;
 
     // objects
-    GameState gameState = GameState.PLAY;
+    public GameState gameState = GameState.PLAY;
     TileManager tileM = new TileManager(this);
     KeyHandler keyH = new KeyHandler(this);
     Thread gameThread;
@@ -73,6 +73,12 @@ public class GamePanel extends JPanel implements Runnable {
                 delta--;
             }
         }
+    }
+
+
+    public void reset() {
+        player.reset();
+        ui.reset();
     }
 
 

@@ -45,6 +45,15 @@ public class KeyHandler implements KeyListener {
                         break;
                 }
                 break;
+            case KeyEvent.VK_R:
+                switch (gp.gameState) {
+                    case END:
+                        gp.reset();
+                        gp.gameState = GameState.PLAY;
+                        break;
+                    default:
+                        break;
+                }
         }
     }
 
@@ -55,16 +64,16 @@ public class KeyHandler implements KeyListener {
         switch (code) {
             case KeyEvent.VK_W:
                 upPressed = false;
-                // break;
+                break;
             case KeyEvent.VK_S:
                 downPressed = false;
-                // break;
+                break;
             case KeyEvent.VK_A:
                 leftPressed = false;
-                // break;
+                break;
             case KeyEvent.VK_D:
                 rightPressed = false;
-                // break;
+                break;
         }
     }
     

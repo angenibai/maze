@@ -8,6 +8,7 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 
 import main.GamePanel;
+import main.GameState;
 import main.KeyHandler;
 
 public class Player extends Entity {
@@ -53,8 +54,12 @@ public class Player extends Entity {
     }
 
     public void update() {
-        if (keyH.upPressed == true || keyH.downPressed == true ||
-            keyH.leftPressed == true || keyH.rightPressed == true) {
+        if (gp.gameState != GameState.PLAY) {
+            return;
+        }
+
+        if (keyH.upPressed || keyH.downPressed ||
+            keyH.leftPressed || keyH.rightPressed) {
                 if (keyH.upPressed == true) {
                     direction = "up";
                 } else if (keyH.downPressed == true) {
@@ -87,6 +92,8 @@ public class Player extends Entity {
                         }
                     }
                 }
+
+                gp.cChecker.checkEnd(this);
         
                 // walking animation
                 spriteCounter++;
@@ -96,6 +103,10 @@ public class Player extends Entity {
                 }
         }
 
+    }
+
+    public void reset() {
+        setDefaultValues();
     }
 
     public void draw(Graphics2D g2) {
