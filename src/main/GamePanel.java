@@ -8,6 +8,7 @@ import java.awt.Color;
 import javax.swing.JPanel;
 
 import entity.Player;
+import environment.EnvironmentManager;
 import tile.TileManager;
 
 public class GamePanel extends JPanel implements Runnable {
@@ -26,13 +27,14 @@ public class GamePanel extends JPanel implements Runnable {
     final int FPS = 60;
 
     // objects
-    public GameState gameState = GameState.PLAY;
+    public GameState gameState;
     TileManager tileM = new TileManager(this);
     KeyHandler keyH = new KeyHandler(this);
     Thread gameThread;
     public CollisionChecker cChecker = new CollisionChecker(this);
-    Player player = new Player(this, keyH);
+    public Player player = new Player(this, keyH);
     UI ui = new UI(this);
+    EnvironmentManager eManager = new EnvironmentManager(this);
 
 
     public GamePanel() {
@@ -49,11 +51,16 @@ public class GamePanel extends JPanel implements Runnable {
         gameThread.start();
     }
 
+    public void setup() {
+        gameState = GameState.PLAY;
+        eManager.setup();
+    }
 
     @Override
     public void run() {
+        setup();
         // game loop
-        double drawInterval = secondInNano / FPS;
+        double drawInterval = (double) secondInNano / FPS;
         double delta = 0;
         long lastTime = System.nanoTime();
         long currentTime;
@@ -84,6 +91,7 @@ public class GamePanel extends JPanel implements Runnable {
 
     public void update() {
         player.update();
+        eManager.update();
     }
 
 
@@ -94,6 +102,7 @@ public class GamePanel extends JPanel implements Runnable {
 
         tileM.draw(g2);
         player.draw(g2);
+        eManager.draw(g2);
         ui.draw(g2);
 
         g2.dispose();

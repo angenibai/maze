@@ -22,7 +22,7 @@ public class Player extends Entity {
         solidArea = new Rectangle();
         solidArea.x = (int) Math.round(2.7 * gp.scale);
         solidArea.y = solidArea.x * 2;
-        solidArea.width = (int) Math.round(3.5 * solidArea.x);
+        solidArea.width = (int) Math.round(3 * solidArea.x);
         solidArea.height = solidArea.width;
 
         setDefaultValues();
@@ -60,22 +60,22 @@ public class Player extends Entity {
 
         if (keyH.upPressed || keyH.downPressed ||
             keyH.leftPressed || keyH.rightPressed) {
-                if (keyH.upPressed == true) {
+                if (keyH.upPressed) {
                     direction = "up";
-                } else if (keyH.downPressed == true) {
+                } else if (keyH.downPressed) {
                     direction = "down";
-                } else if (keyH.leftPressed == true) {
+                } else if (keyH.leftPressed) {
                     direction = "left";
-                } else if (keyH.rightPressed == true) {
+                } else if (keyH.rightPressed) {
                     direction = "right";
                 }
 
                 collisionOn = false;
                 gp.cChecker.checkBoundary(this);
                 
-                if (collisionOn == false) {
+                if (!collisionOn) {
                     gp.cChecker.checkTile(this);
-                    if (collisionOn == false) {
+                    if (!collisionOn) {
                         switch (direction) {
                             case "up":
                                 y -= speed;
