@@ -16,7 +16,7 @@ public class VisionItem extends Entity {
     }
 
     public void collideEffect() {
-        super.gp.envManager.lightRadius = 400;
+        super.gp.envManager.lightRadius += 120;
         super.gp.envManager.lightCounter += (4 * gp.FPS);
     }
 }
