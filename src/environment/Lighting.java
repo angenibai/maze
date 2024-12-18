@@ -1,11 +1,9 @@
 package environment;
 
 import main.GamePanel;
-import main.GameState;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.util.Arrays;
 
 public class Lighting {
     GamePanel gp;

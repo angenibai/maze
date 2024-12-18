@@ -5,6 +5,7 @@ import entity.Entity;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 
+
 public final class UtilityTool {
     private UtilityTool() {}
 

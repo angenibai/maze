@@ -6,7 +6,6 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.nio.Buffer;
 
 import javax.imageio.ImageIO;
 
@@ -20,7 +19,6 @@ public class TileManager {
 
     private final int GRASS = 0;
     private final int TREE = 1;
-    private final int WATER = 2;
     private final int END = 3;
 
     public TileManager(GamePanel gp) {
