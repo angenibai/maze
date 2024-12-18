@@ -7,6 +7,7 @@ import java.awt.Color;
 
 import javax.swing.JPanel;
 
+import entity.EntityManager;
 import entity.Player;
 import environment.EnvironmentManager;
 import tile.TileManager;
@@ -25,6 +26,8 @@ public class GamePanel extends JPanel implements Runnable {
     // time consts
     final int secondInNano = 1000000000;
     final int FPS = 60;
+    int count = 0;
+    long averageTime = 0;
 
     // objects
     public GameState gameState;
@@ -34,7 +37,8 @@ public class GamePanel extends JPanel implements Runnable {
     public CollisionChecker cChecker = new CollisionChecker(this);
     public Player player = new Player(this, keyH);
     UI ui = new UI(this);
-    EnvironmentManager eManager = new EnvironmentManager(this);
+    EnvironmentManager envManager = new EnvironmentManager(this);
+    EntityManager entManager = new EntityManager(this);
 
 
     public GamePanel() {
@@ -53,7 +57,9 @@ public class GamePanel extends JPanel implements Runnable {
 
     public void setup() {
         gameState = GameState.PLAY;
-        eManager.setup();
+        envManager.setup();
+        entManager.setup();
+        player.setup();
     }
 
     @Override
@@ -91,7 +97,7 @@ public class GamePanel extends JPanel implements Runnable {
 
     public void update() {
         player.update();
-        eManager.update();
+        envManager.update();
     }
 
 
@@ -100,10 +106,22 @@ public class GamePanel extends JPanel implements Runnable {
 
         Graphics2D g2 = (Graphics2D) g;
 
+        long drawStart = System.nanoTime();
+
         tileM.draw(g2);
         player.draw(g2);
-        eManager.draw(g2);
+        envManager.draw(g2);
         ui.draw(g2);
+
+        long drawEnd = System.nanoTime();
+        long passed = drawEnd - drawStart;
+        if (count > 0) {
+            averageTime = (passed + averageTime * (count-1)) / count;
+            System.out.println("Average draw time " + averageTime);
+        } else {
+            System.out.println("Initial draw time " + passed);
+        }
+        count++;
 
         g2.dispose();
     }

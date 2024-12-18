@@ -1,14 +1,17 @@
 package tile;
 
 import java.awt.Graphics2D;
+import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.nio.Buffer;
 
 import javax.imageio.ImageIO;
 
 import main.GamePanel;
+import main.UtilityTool;
 
 public class TileManager {
     GamePanel gp;
@@ -31,25 +34,44 @@ public class TileManager {
     }
 
     public void getTileImage() {
-        try {
-            tile[GRASS] = new Tile();
-            tile[GRASS].image = ImageIO.read(getClass().getResourceAsStream("/tiles/grass01.png"));
+        tile[GRASS] = new TileBuilder("/tiles/grass01.png", gp.tileSize).build();
+        tile[TREE] = new TileBuilder("/tiles/tree.png", gp.tileSize)
+                            .withCollision().build();
+        tile[END] = new TileBuilder("/tiles/floor01.png", gp.tileSize)
+                .withEnd().build();
+    }
 
-            tile[TREE] = new Tile();
-            tile[TREE].image = ImageIO.read(getClass().getResourceAsStream("/tiles/tree.png"));
-            tile[TREE].collision = true;
+    public static class TileBuilder {
+        private BufferedImage image;
+        private boolean collision = false;
+        private boolean end = false;
 
-            tile[WATER] = new Tile();
-            tile[WATER].image = ImageIO.read(getClass().getResourceAsStream("/tiles/water.png"));
-            tile[WATER].collision = true;
+        public TileBuilder(String imagePath, int size) {
+            try {
+                BufferedImage originalImage = ImageIO.read(getClass().getResourceAsStream(imagePath));
+                image = UtilityTool.scaleImage(originalImage, size, size);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
 
-            tile[END] = new Tile();
-            tile[END].image = ImageIO.read(getClass().getResourceAsStream("/tiles/floor01.png"));
-            tile[END].collision = false;
-            tile[END].end = true;
+        public TileBuilder withCollision() {
+            collision = true;
+            return this;
+        }
 
-        } catch(IOException e) {
-            e.printStackTrace();
+        public TileBuilder withEnd() {
+            end = true;
+            return this;
+        }
+
+        public Tile build() {
+            Tile tile = new Tile();
+            tile.image = image;
+            tile.collision = collision;
+            tile.end = end;
+
+            return tile;
         }
     }
 
@@ -83,7 +105,6 @@ public class TileManager {
 
                 g2.drawImage(tile[tileNum].image,
                                 col*gp.tileSize, row*gp.tileSize,
-                                gp.tileSize, gp.tileSize,
                                 null);
             }
         }

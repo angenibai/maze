@@ -1,9 +1,12 @@
 package entity;
 
+import javax.imageio.ImageIO;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
+import java.io.IOException;
 
 public class Entity {
+    public int startX, startY;
     public int x, y;
     public int speed;
 
@@ -15,4 +18,15 @@ public class Entity {
 
     public Rectangle solidArea;
     public boolean collisionOn = false;
+    
+    public BufferedImage loadImage(String filePath) {
+        BufferedImage image = null;
+        try {
+            image = ImageIO.read(getClass().getResourceAsStream(filePath));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return image;
+    }
 }
