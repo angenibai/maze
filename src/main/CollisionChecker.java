@@ -1,5 +1,6 @@
 package main;
 
+import java.awt.*;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -95,6 +96,41 @@ public class CollisionChecker {
         entity.collisionOn |= boundaryCollision;
     }
 
+    public Entity checkItems(Player player) {
+        // Check if player has collided with any of the items
+        // return the collided item
+        Entity collided = null;
+
+        for (Entity item : gp.items) {
+            Rectangle playerArea = UtilityTool.getAbsoluteArea(player);
+            Rectangle itemArea = UtilityTool.getAbsoluteArea(item);
+
+            switch (player.direction) {
+                case "up":
+                    playerArea.y -= player.speed;
+                    break;
+                case "down":
+                    playerArea.y += player.speed;
+                    break;
+                case "left":
+                    playerArea.x -= player.speed;
+                    break;
+                case "right":
+                    playerArea.x += player.speed;
+                    break;
+                default:
+                    break;
+            }
+
+            if (playerArea.intersects(itemArea)) {
+                collided = item;
+                break;
+            }
+        }
+
+        return collided;
+    }
+
     public void checkEnd(Player player) {
         // when player is on the end tile
         Map<String, Integer> pos = calculatePosition(player);
@@ -118,4 +154,5 @@ public class CollisionChecker {
             gp.gameState = GameState.END;
         }
     }
+
 }

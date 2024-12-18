@@ -1,5 +1,6 @@
 package entity;
 
+import item.VisionItem;
 import main.GamePanel;
 import org.yaml.snakeyaml.LoaderOptions;
 import org.yaml.snakeyaml.constructor.Constructor;
@@ -36,7 +37,7 @@ public class EntityManager {
     }
 
     public void reset() {
-        // TODO reset the items
+        setupItems();
         // do i need to reset the player?
     }
 
@@ -51,6 +52,17 @@ public class EntityManager {
     }
 
     public void setupItems() {
-        // TODO
+        for (MapMetadata.Item itemData : entitiesData.items) {
+            Entity newItem = null;
+            if (itemData.type.equals("vision")) {
+                newItem = new VisionItem(gp);
+            }
+            if (newItem != null) {
+                newItem.startX = idxToCoord(itemData.pos.col);
+                newItem.startY = idxToCoord(itemData.pos.row);
+                newItem.setup();
+                gp.items.add(newItem);
+            }
+        }
     }
 }

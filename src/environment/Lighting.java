@@ -10,15 +10,13 @@ import java.util.Arrays;
 public class Lighting {
     GamePanel gp;
     BufferedImage darknessFilter;
-    int circleSize;
 
     public Lighting(GamePanel gp, int circleSize) {
         this.gp = gp;
-        this.circleSize = circleSize;
-        update();
+        update(circleSize);
     }
 
-    public void update() {
+    public void update(int circleSize) {
         darknessFilter = new BufferedImage(gp.screenWidth, gp.screenHeight, BufferedImage.TYPE_INT_ARGB);
         Graphics2D g2 = (Graphics2D) darknessFilter.getGraphics();
 

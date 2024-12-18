@@ -4,9 +4,12 @@ import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Color;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.JPanel;
 
+import entity.Entity;
 import entity.EntityManager;
 import entity.Player;
 import environment.EnvironmentManager;
@@ -25,7 +28,7 @@ public class GamePanel extends JPanel implements Runnable {
 
     // time consts
     final int secondInNano = 1000000000;
-    final int FPS = 60;
+    public final int FPS = 60;
     int count = 0;
     long averageTime = 0;
 
@@ -36,8 +39,9 @@ public class GamePanel extends JPanel implements Runnable {
     Thread gameThread;
     public CollisionChecker cChecker = new CollisionChecker(this);
     public Player player = new Player(this, keyH);
+    public List<Entity> items = new ArrayList<Entity>();
     UI ui = new UI(this);
-    EnvironmentManager envManager = new EnvironmentManager(this);
+    public EnvironmentManager envManager = new EnvironmentManager(this);
     EntityManager entManager = new EntityManager(this);
 
 
@@ -88,18 +92,17 @@ public class GamePanel extends JPanel implements Runnable {
         }
     }
 
-
     public void reset() {
         player.reset();
+        entManager.reset();
+        envManager.reset();
         ui.reset();
     }
-
 
     public void update() {
         player.update();
         envManager.update();
     }
-
 
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
@@ -109,18 +112,24 @@ public class GamePanel extends JPanel implements Runnable {
         long drawStart = System.nanoTime();
 
         tileM.draw(g2);
+
+        for (Entity item : items) {
+            item.draw(g2);
+        }
+
         player.draw(g2);
         envManager.draw(g2);
         ui.draw(g2);
 
-        long drawEnd = System.nanoTime();
-        long passed = drawEnd - drawStart;
-        if (count > 0) {
-            averageTime = (passed + averageTime * (count-1)) / count;
-            System.out.println("Average draw time " + averageTime);
-        } else {
-            System.out.println("Initial draw time " + passed);
-        }
+        // DEBUG
+//        long drawEnd = System.nanoTime();
+//        long passed = drawEnd - drawStart;
+//        if (count > 0) {
+//            averageTime = (passed + averageTime * (count-1)) / count;
+//            System.out.println("Average draw time " + averageTime);
+//        } else {
+//            System.out.println("Initial draw time " + passed);
+//        }
         count++;
 
         g2.dispose();

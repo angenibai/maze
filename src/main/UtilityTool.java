@@ -1,5 +1,7 @@
 package main;
 
+import entity.Entity;
+
 import java.awt.*;
 import java.awt.image.BufferedImage;
 
@@ -14,5 +16,13 @@ public final class UtilityTool {
         g2.dispose();
 
         return scaled;
+    }
+
+    public static Rectangle getAbsoluteArea(Entity entity) {
+        Rectangle absolute = new Rectangle(entity.solidArea);
+        absolute.x += entity.x;
+        absolute.y += entity.y;
+
+        return absolute;
     }
 }

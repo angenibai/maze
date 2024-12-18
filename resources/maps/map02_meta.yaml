@@ -6,3 +6,7 @@ items:
     pos:
       col: 1
       row: 7
+  - type: vision
+    pos:
+      col: 7
+      row: 2
