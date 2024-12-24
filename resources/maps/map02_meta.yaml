@@ -1,0 +1,12 @@
+p1Start:
+  col: 0
+  row: 2
+items:
+  - type: vision
+    pos:
+      col: 1
+      row: 7
+  - type: vision
+    pos:
+      col: 7
+      row: 2

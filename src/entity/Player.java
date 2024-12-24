@@ -1,56 +1,36 @@
 package entity;
 
-import java.awt.Graphics2D;
-import java.awt.Rectangle;
-import java.awt.image.BufferedImage;
-import java.io.IOException;
-
-import javax.imageio.ImageIO;
-
 import main.GamePanel;
 import main.GameState;
 import main.KeyHandler;
 
+
 public class Player extends Entity {
-    GamePanel gp;
     KeyHandler keyH;
 
     public Player(GamePanel gp, KeyHandler keyH) {
-        this.gp = gp;
+        super(gp);
         this.keyH = keyH;
 
-        solidArea = new Rectangle();
-        solidArea.x = (int) Math.round(2.7 * gp.scale);
-        solidArea.y = solidArea.x * 2;
-        solidArea.width = (int) Math.round(3.5 * solidArea.x);
-        solidArea.height = solidArea.width;
-
-        setDefaultValues();
         getPlayerImage();
     }
 
-    public void setDefaultValues() {
-        x = 0;
-        y = 2 * gp.tileSize - gp.tileSize / 10;
+    public void setup() {
+        x = startX;
+        y = startY;
         speed = 4;
         direction = "down";
     }
 
     public void getPlayerImage() {
-        try {
-            up1 = ImageIO.read(getClass().getResourceAsStream("/player/boy_up_1.png"));
-            up2 = ImageIO.read(getClass().getResourceAsStream("/player/boy_up_2.png"));
-            down1 = ImageIO.read(getClass().getResourceAsStream("/player/boy_down_1.png"));
-            down2 = ImageIO.read(getClass().getResourceAsStream("/player/boy_down_2.png"));
-            left1 = ImageIO.read(getClass().getResourceAsStream("/player/boy_left_1.png"));
-            left2 = ImageIO.read(getClass().getResourceAsStream("/player/boy_left_2.png"));
-            right1 = ImageIO.read(getClass().getResourceAsStream("/player/boy_right_1.png"));
-            right2 = ImageIO.read(getClass().getResourceAsStream("/player/boy_right_2.png"));
-
-        } catch(IOException e) {
-            e.printStackTrace();
-
-        }
+        up1 = setupImage("/player/boy_up_1.png");
+        up2 = setupImage("/player/boy_up_2.png");
+        down1 = setupImage("/player/boy_down_1.png");
+        down2 = setupImage("/player/boy_down_2.png");
+        left1 = setupImage("/player/boy_left_1.png");
+        left2 = setupImage("/player/boy_left_2.png");
+        right1 = setupImage("/player/boy_right_1.png");
+        right2 = setupImage("/player/boy_right_2.png");
     }
 
     public void update() {
@@ -60,22 +40,22 @@ public class Player extends Entity {
 
         if (keyH.upPressed || keyH.downPressed ||
             keyH.leftPressed || keyH.rightPressed) {
-                if (keyH.upPressed == true) {
+                if (keyH.upPressed) {
                     direction = "up";
-                } else if (keyH.downPressed == true) {
+                } else if (keyH.downPressed) {
                     direction = "down";
-                } else if (keyH.leftPressed == true) {
+                } else if (keyH.leftPressed) {
                     direction = "left";
-                } else if (keyH.rightPressed == true) {
+                } else if (keyH.rightPressed) {
                     direction = "right";
                 }
 
                 collisionOn = false;
                 gp.cChecker.checkBoundary(this);
                 
-                if (collisionOn == false) {
+                if (!collisionOn) {
                     gp.cChecker.checkTile(this);
-                    if (collisionOn == false) {
+                    if (!collisionOn) {
                         switch (direction) {
                             case "up":
                                 y -= speed;
@@ -90,6 +70,12 @@ public class Player extends Entity {
                                 x += speed;
                                 break;
                         }
+
+                        Entity collided = gp.cChecker.checkItems(this);
+                        if (collided != null) {
+                            collectItem(collided);
+                        }
+
                     }
                 }
 
@@ -105,28 +91,8 @@ public class Player extends Entity {
 
     }
 
-    public void reset() {
-        setDefaultValues();
-    }
-
-    public void draw(Graphics2D g2) {
-        BufferedImage image = null;
-
-        switch (direction) {
-            case "up":
-                image = (spriteNum == 1) ? up1 : up2;
-                break;
-            case "down":
-                image = (spriteNum == 1) ? down1 : down2;
-                break;
-            case "left":
-                image = (spriteNum == 1) ? left1 : left2;
-                break;
-            case "right":
-                image = (spriteNum == 1) ? right1 : right2;
-                break;
-        }
-
-        g2.drawImage(image, x, y, gp.tileSize, gp.tileSize, null);
+    public void collectItem(Entity item) {
+        gp.items.remove(item);
+        item.collideEffect();
     }
 }
