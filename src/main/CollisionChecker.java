@@ -39,26 +39,26 @@ public class CollisionChecker {
         int tileNum1, tileNum2;
 
         switch (entity.direction) {
-            case "up":
+            case UP:
                 // check tiles above
                 pos.put("topY", pos.get("topY") - entity.speed);
                 tileNum1 = gp.tileM.mapTileNum[posIdx(pos.get("leftX"))][posIdx(pos.get("topY"))];
                 tileNum2 = gp.tileM.mapTileNum[posIdx(pos.get("rightX"))][posIdx(pos.get("topY"))];
                 break;
 
-            case "down":
+            case DOWN:
                 pos.put("bottomY", pos.get("bottomY") + entity.speed);
                 tileNum1 = gp.tileM.mapTileNum[posIdx(pos.get("leftX"))][posIdx(pos.get("bottomY"))];
                 tileNum2 = gp.tileM.mapTileNum[posIdx(pos.get("rightX"))][posIdx(pos.get("bottomY"))];
                 break;
 
-            case "left":
+            case LEFT:
                 pos.put("leftX", pos.get("leftX") - entity.speed);
                 tileNum1 = gp.tileM.mapTileNum[posIdx(pos.get("leftX"))][posIdx(pos.get("topY"))];
                 tileNum2 = gp.tileM.mapTileNum[posIdx(pos.get("leftX"))][posIdx(pos.get("bottomY"))];
                 break;
 
-            case "right":
+            case RIGHT:
                 pos.put("rightX", pos.get("rightX") + entity.speed);
                 tileNum1 = gp.tileM.mapTileNum[posIdx(pos.get("rightX"))][posIdx(pos.get("topY"))];
                 tileNum2 = gp.tileM.mapTileNum[posIdx(pos.get("rightX"))][posIdx(pos.get("bottomY"))];
@@ -79,16 +79,16 @@ public class CollisionChecker {
         boolean boundaryCollision = false;
 
         switch (entity.direction) {
-            case "up":
+            case UP:
                 boundaryCollision = pos.get("topY") - entity.speed < 0;
                 break;
-            case "down":
+            case DOWN:
                 boundaryCollision = pos.get("bottomY") + entity.speed >= gp.screenHeight;
                 break;
-            case "left":
+            case LEFT:
                 boundaryCollision = pos.get("leftX") - entity.speed < 0;
                 break;
-            case "right":
+            case RIGHT:
                 boundaryCollision = pos.get("rightX") + entity.speed >= gp.screenWidth;
                 break;
         }
@@ -106,16 +106,16 @@ public class CollisionChecker {
             Rectangle itemArea = UtilityTool.getAbsoluteArea(item);
 
             switch (player.direction) {
-                case "up":
+                case UP:
                     playerArea.y -= player.speed;
                     break;
-                case "down":
+                case DOWN:
                     playerArea.y += player.speed;
                     break;
-                case "left":
+                case LEFT:
                     playerArea.x -= player.speed;
                     break;
-                case "right":
+                case RIGHT:
                     playerArea.x += player.speed;
                     break;
                 default:

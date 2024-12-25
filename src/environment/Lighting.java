@@ -18,8 +18,10 @@ public class Lighting {
         darknessFilter = new BufferedImage(gp.screenWidth, gp.screenHeight, BufferedImage.TYPE_INT_ARGB);
         Graphics2D g2 = (Graphics2D) darknessFilter.getGraphics();
 
-        int centerX = gp.player.x + (gp.tileSize) / 2;
-        int centerY = gp.player.y + (gp.tileSize) / 2;
+        // TODO make this work for multiple players
+
+        int centerX = gp.player1.x + (gp.tileSize) / 2;
+        int centerY = gp.player1.y + (gp.tileSize) / 2;
 
         Color[] color = setupColor();
         float[] fraction = setupFraction();

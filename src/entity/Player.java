@@ -1,16 +1,18 @@
 package entity;
 
+import main.Direction;
 import main.GamePanel;
 import main.GameState;
-import main.KeyHandler;
 
 
 public class Player extends Entity {
-    KeyHandler keyH;
+    public boolean toMove;
+    public int playerNum;
 
-    public Player(GamePanel gp, KeyHandler keyH) {
+    public Player(GamePanel gp, int playerNum) {
         super(gp);
-        this.keyH = keyH;
+        this.playerNum = playerNum;
+        this.toMove = false;
 
         getPlayerImage();
     }
@@ -19,7 +21,8 @@ public class Player extends Entity {
         x = startX;
         y = startY;
         speed = 4;
-        direction = "down";
+        direction = Direction.DOWN;
+        toMove = false;
     }
 
     public void getPlayerImage() {
@@ -38,35 +41,24 @@ public class Player extends Entity {
             return;
         }
 
-        if (keyH.upPressed || keyH.downPressed ||
-            keyH.leftPressed || keyH.rightPressed) {
-                if (keyH.upPressed) {
-                    direction = "up";
-                } else if (keyH.downPressed) {
-                    direction = "down";
-                } else if (keyH.leftPressed) {
-                    direction = "left";
-                } else if (keyH.rightPressed) {
-                    direction = "right";
-                }
-
-                collisionOn = false;
+        if (toMove) {
+            collisionOn = false;
                 gp.cChecker.checkBoundary(this);
                 
                 if (!collisionOn) {
                     gp.cChecker.checkTile(this);
                     if (!collisionOn) {
                         switch (direction) {
-                            case "up":
+                            case UP:
                                 y -= speed;
                                 break;
-                            case "down":
+                            case DOWN:
                                 y += speed;
                                 break;
-                            case "left":
+                            case LEFT:
                                 x -= speed;
                                 break;
-                            case "right":
+                            case RIGHT:
                                 x += speed;
                                 break;
                         }

@@ -16,7 +16,7 @@ public class EnvironmentManager {
     }
 
     public void setup() {
-        lighting = new Lighting(gp, lightRadius);
+        // lighting = new Lighting(gp, lightRadius);
     }
 
     public void update() {
@@ -29,12 +29,12 @@ public class EnvironmentManager {
             lightRadius = defaultLightRadius;
         }
 
-        lighting.update(lightRadius);
+        // lighting.update(lightRadius);
     }
 
     public void draw(Graphics2D g2) {
         if (lighting != null) {
-            lighting.draw(g2);
+            // lighting.draw(g2);
         }
     }
 
