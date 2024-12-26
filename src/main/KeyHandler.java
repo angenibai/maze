@@ -2,14 +2,26 @@ package main;
 
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.util.HashSet;
+import java.util.Set;
 
 public class KeyHandler implements KeyListener {
 
     GamePanel gp;
-    public boolean upPressed, downPressed, leftPressed, rightPressed;
+    public Set<Integer> pressedEvents = new HashSet<Integer>();
+    Set<Integer> validMoveKeys = new HashSet<Integer>();
 
     public KeyHandler(GamePanel gp) {
         this.gp = gp;
+
+        validMoveKeys.add(KeyEvent.VK_W);
+        validMoveKeys.add(KeyEvent.VK_S);
+        validMoveKeys.add(KeyEvent.VK_A);
+        validMoveKeys.add(KeyEvent.VK_D);
+        validMoveKeys.add(KeyEvent.VK_UP);
+        validMoveKeys.add(KeyEvent.VK_DOWN);
+        validMoveKeys.add(KeyEvent.VK_LEFT);
+        validMoveKeys.add(KeyEvent.VK_RIGHT);
     }
 
     @Override
@@ -39,63 +51,18 @@ public class KeyHandler implements KeyListener {
                 default:
                     break;
             }
-        } else {
-            if (code == KeyEvent.VK_W || code == KeyEvent.VK_S ||
-                code == KeyEvent.VK_A || code == KeyEvent.VK_D) {
-                    gp.player1.toMove = true;
-                    switch (code) {
-                        case KeyEvent.VK_W:
-                            gp.player1.direction = Direction.UP;
-                            break;
-                        case KeyEvent.VK_S:
-                            gp.player1.direction = Direction.DOWN;
-                            break;
-                        case KeyEvent.VK_A:
-                            gp.player1.direction = Direction.LEFT;
-                            break;
-                        case KeyEvent.VK_D:
-                            gp.player1.direction = Direction.RIGHT;
-                            break;
-                    }
-                }
-            
-            if (code == KeyEvent.VK_UP || code == KeyEvent.VK_DOWN ||
-                code == KeyEvent.VK_LEFT || code == KeyEvent.VK_RIGHT) {
-                    gp.player2.toMove = true;
-                    switch (code) {
-                        case KeyEvent.VK_UP:
-                            gp.player2.direction = Direction.UP;
-                            break;
-                        case KeyEvent.VK_DOWN:
-                            gp.player2.direction = Direction.DOWN;
-                            break;
-                        case KeyEvent.VK_LEFT:
-                            gp.player2.direction = Direction.LEFT;
-                            break;
-                        case KeyEvent.VK_RIGHT:
-                            gp.player2.direction = Direction.RIGHT;
-                            break;
-                    }
-                }
+        } else if (validMoveKeys.contains(code)) {
+            pressedEvents.add(code);
         }
-
-        // System.out.println("p1 move " + gp.player1.toMove + " direction " + gp.player1.direction);
-        // System.out.println("p2 move " + gp.player2.toMove + " direction " + gp.player2.direction);
     }
 
     @Override
     public void keyReleased(KeyEvent e) {
         int code = e.getKeyCode();
 
-        if (code == KeyEvent.VK_W || code == KeyEvent.VK_S ||
-            code == KeyEvent.VK_A || code == KeyEvent.VK_D) {
-                gp.player1.toMove = false;
-            }
-
-        if (code == KeyEvent.VK_UP || code == KeyEvent.VK_DOWN ||
-            code == KeyEvent.VK_LEFT || code == KeyEvent.VK_RIGHT) {
-                gp.player2.toMove = false;
-            }
+        if (pressedEvents.contains(code)) {
+            pressedEvents.remove(code);
+        }
     }
     
 }
