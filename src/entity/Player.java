@@ -105,8 +105,6 @@ public class Player extends Entity {
                     }
                 }
 
-                gp.cChecker.checkEnd(this);
-        
                 // walking animation
                 spriteCounter++;
                 if (spriteCounter > 12) {

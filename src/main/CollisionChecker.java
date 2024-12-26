@@ -131,26 +131,12 @@ public class CollisionChecker {
         return collided;
     }
 
-    public void checkEnd(Player player) {
-        // when player is on the end tile
-        Map<String, Integer> pos = calculatePosition(player);
+    public void checkEnd(Player p1, Player p2) {
+        // when the two players collide
+        Rectangle p1Area = UtilityTool.getAbsoluteArea(p1);
+        Rectangle p2Area = UtilityTool.getAbsoluteArea(p2);
 
-        int[] tileNums = new int[4];
-
-        tileNums[0] = gp.tileM.mapTileNum[posIdx(pos.get("leftX"))][posIdx(pos.get("topY"))];
-        tileNums[1] = gp.tileM.mapTileNum[posIdx(pos.get("rightX"))][posIdx(pos.get("topY"))];
-        tileNums[2] = gp.tileM.mapTileNum[posIdx(pos.get("leftX"))][posIdx(pos.get("bottomY"))];
-        tileNums[3] = gp.tileM.mapTileNum[posIdx(pos.get("rightX"))][posIdx(pos.get("bottomY"))];
-
-        boolean end = false;
-        for (int tileNum : tileNums) {
-            if (gp.tileM.tile[tileNum].end) {
-                end = true;
-                break;
-            }
-        }
-
-        if (end && gp.gameState == GameState.PLAY) {
+        if (p1Area.intersects(p2Area) && gp.gameState == GameState.PLAY) {
             gp.gameState = GameState.END;
         }
     }

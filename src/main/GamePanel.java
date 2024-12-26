@@ -106,6 +106,7 @@ public class GamePanel extends JPanel implements Runnable {
         player1.update();
         player2.update();
         envManager.update();
+        cChecker.checkEnd(player1, player2);
     }
 
     public void paintComponent(Graphics g) {
