@@ -80,7 +80,7 @@ public class Entity {
         setup();
     }
 
-    public void collideEffect() {
+    public void collideEffect(Player player) {
         System.out.println("collideEffect() not implemented");
     }
 }

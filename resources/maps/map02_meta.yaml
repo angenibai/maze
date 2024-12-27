@@ -13,3 +13,7 @@ items:
     pos:
       col: 7
       row: 2
+  - type: vision
+    pos:
+      col: 11
+      row: 2

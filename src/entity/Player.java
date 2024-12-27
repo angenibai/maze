@@ -4,6 +4,7 @@ import java.awt.event.KeyEvent;
 import java.util.HashMap;
 import java.util.Map;
 
+import environment.LightingProperty;
 import main.Direction;
 import main.GamePanel;
 import main.GameState;
@@ -14,12 +15,14 @@ public class Player extends Entity {
     public boolean toMove;
     public int playerNum;
     public Map<Direction, Integer> moveKey;
+    public LightingProperty lightingProp;
     KeyHandler keyH;
 
     public Player(GamePanel gp, int playerNum, KeyHandler keyH) {
         super(gp);
         this.playerNum = playerNum;
         this.keyH = keyH;
+        this.lightingProp = new LightingProperty();
         this.toMove = false;
 
         moveKey = new HashMap<Direction, Integer>();
@@ -63,13 +66,13 @@ public class Player extends Entity {
         }
 
         toMove = true;
-        if (keyH.pressedEvents.contains(moveKey.get(Direction.UP))) {
+        if (keyH.pressedMoveKeys.contains(moveKey.get(Direction.UP))) {
             direction = Direction.UP;
-        } else if (keyH.pressedEvents.contains(moveKey.get(Direction.DOWN))) {
+        } else if (keyH.pressedMoveKeys.contains(moveKey.get(Direction.DOWN))) {
             direction = Direction.DOWN;
-        } else if (keyH.pressedEvents.contains(moveKey.get(Direction.LEFT))) {
+        } else if (keyH.pressedMoveKeys.contains(moveKey.get(Direction.LEFT))) {
             direction = Direction.LEFT;
-        } else if (keyH.pressedEvents.contains(moveKey.get(Direction.RIGHT))) {
+        } else if (keyH.pressedMoveKeys.contains(moveKey.get(Direction.RIGHT))) {
             direction = Direction.RIGHT;
         } else {
             toMove = false;
@@ -117,6 +120,6 @@ public class Player extends Entity {
 
     public void collectItem(Entity item) {
         gp.items.remove(item);
-        item.collideEffect();
+        item.collideEffect(this);
     }
 }
