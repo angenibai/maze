@@ -42,8 +42,10 @@ public class EntityManager {
     }
 
     public void setupPlayer() {
-        gp.player.startX = idxToCoord(entitiesData.p1Start.col);
-        gp.player.startY = idxToCoord(entitiesData.p1Start.row);
+        gp.player1.startX = idxToCoord(entitiesData.p1Start.col);
+        gp.player1.startY = idxToCoord(entitiesData.p1Start.row);
+        gp.player2.startX = idxToCoord(entitiesData.p2Start.col);
+        gp.player2.startY = idxToCoord(entitiesData.p2Start.row);
         // where the actual player goes is handled by Player
     }
 

@@ -4,6 +4,7 @@ import java.util.List;
 
 public class MapMetadata {
     public Position p1Start;
+    public Position p2Start;
     public List<Item> items;
 
     public static class Position {

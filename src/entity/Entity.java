@@ -1,5 +1,6 @@
 package entity;
 
+import main.Direction;
 import main.GamePanel;
 import main.UtilityTool;
 
@@ -16,7 +17,7 @@ public class Entity {
     public int speed;
 
     public BufferedImage up1, up2, down1, down2, left1, left2, right1, right2;
-    public String direction = "down";
+    public Direction direction = Direction.DOWN;
 
     public int spriteCounter = 0;
     public int spriteNum = 1;
@@ -58,16 +59,16 @@ public class Entity {
         BufferedImage image = null;
 
         switch (direction) {
-            case "up":
+            case UP:
                 image = (spriteNum == 1) ? up1 : up2;
                 break;
-            case "down":
+            case DOWN:
                 image = (spriteNum == 1) ? down1 : down2;
                 break;
-            case "left":
+            case LEFT:
                 image = (spriteNum == 1) ? left1 : left2;
                 break;
-            case "right":
+            case RIGHT:
                 image = (spriteNum == 1) ? right1 : right2;
                 break;
         }
@@ -79,7 +80,7 @@ public class Entity {
         setup();
     }
 
-    public void collideEffect() {
+    public void collideEffect(Player player) {
         System.out.println("collideEffect() not implemented");
     }
 }

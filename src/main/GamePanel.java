@@ -38,7 +38,8 @@ public class GamePanel extends JPanel implements Runnable {
     KeyHandler keyH = new KeyHandler(this);
     Thread gameThread;
     public CollisionChecker cChecker = new CollisionChecker(this);
-    public Player player = new Player(this, keyH);
+    public Player player1 = new Player(this, 1, keyH);
+    public Player player2 = new Player(this, 2, keyH);
     public List<Entity> items = new ArrayList<Entity>();
     UI ui = new UI(this);
     public EnvironmentManager envManager = new EnvironmentManager(this);
@@ -63,7 +64,8 @@ public class GamePanel extends JPanel implements Runnable {
         gameState = GameState.PLAY;
         envManager.setup();
         entManager.setup();
-        player.setup();
+        player1.setup();
+        player2.setup();
     }
 
     @Override
@@ -93,15 +95,18 @@ public class GamePanel extends JPanel implements Runnable {
     }
 
     public void reset() {
-        player.reset();
+        player1.reset();
+        player2.reset();
         entManager.reset();
         envManager.reset();
         ui.reset();
     }
 
     public void update() {
-        player.update();
+        player1.update();
+        player2.update();
         envManager.update();
+        cChecker.checkEnd(player1, player2);
     }
 
     public void paintComponent(Graphics g) {
@@ -117,19 +122,20 @@ public class GamePanel extends JPanel implements Runnable {
             item.draw(g2);
         }
 
-        player.draw(g2);
+        player1.draw(g2);
+        player2.draw(g2);
         envManager.draw(g2);
         ui.draw(g2);
 
         // DEBUG
-//        long drawEnd = System.nanoTime();
-//        long passed = drawEnd - drawStart;
-//        if (count > 0) {
-//            averageTime = (passed + averageTime * (count-1)) / count;
-//            System.out.println("Average draw time " + averageTime);
-//        } else {
-//            System.out.println("Initial draw time " + passed);
-//        }
+       long drawEnd = System.nanoTime();
+       long passed = drawEnd - drawStart;
+       if (count > 0) {
+           averageTime = (passed + averageTime * (count-1)) / count;
+           System.out.println("Average draw time " + averageTime);
+       } else {
+           System.out.println("Initial draw time " + passed);
+       }
         count++;
 
         g2.dispose();

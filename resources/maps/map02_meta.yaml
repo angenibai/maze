@@ -1,6 +1,9 @@
 p1Start:
   col: 0
   row: 2
+p2Start:
+  col: 15
+  row: 9
 items:
   - type: vision
     pos:
@@ -9,4 +12,8 @@ items:
   - type: vision
     pos:
       col: 7
+      row: 2
+  - type: vision
+    pos:
+      col: 11
       row: 2
