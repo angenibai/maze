@@ -32,8 +32,8 @@ public class TileManager {
     }
 
     public void getTileImage() {
-        tile[GRASS] = new TileBuilder("/tiles/grass01.png", gp.tileSize).build();
-        tile[TREE] = new TileBuilder("/tiles/tree.png", gp.tileSize)
+        tile[GRASS] = new TileBuilder("/tiles/grass.png", gp.tileSize).build();
+        tile[TREE] = new TileBuilder("/tiles/hedge.png", gp.tileSize)
                             .withCollision().build();
         tile[END] = new TileBuilder("/tiles/floor01.png", gp.tileSize)
                 .withEnd().build();

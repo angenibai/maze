@@ -8,7 +8,7 @@ import main.GamePanel;
 public class VisionItem extends Entity {
     public VisionItem(GamePanel gp) {
         super(gp);
-        down1 = setupImage("/items/lantern.png");
+        down1 = setupImage("/items/carrot.png");
     }
 
     public void setup() {
