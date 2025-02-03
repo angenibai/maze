@@ -138,6 +138,7 @@ public class CollisionChecker {
 
         if (p1Area.intersects(p2Area) && gp.gameState == GameState.PLAY) {
             gp.gameState = GameState.END;
+            gp.playFx(Sound.WIN);
         }
     }
 

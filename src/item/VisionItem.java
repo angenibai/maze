@@ -3,6 +3,7 @@ package item;
 import entity.Entity;
 import entity.Player;
 import main.GamePanel;
+import main.Sound;
 
 
 public class VisionItem extends Entity {
@@ -19,5 +20,6 @@ public class VisionItem extends Entity {
     public void collideEffect(Player player) {
         player.lightingProp.radius += 60;
         player.lightingProp.counter += (4 * gp.FPS);
+        gp.playFx(Sound.PICKUP);
     }
 }
