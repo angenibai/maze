@@ -12,6 +12,7 @@ public class UI {
     Font arial_80;
     double playTime;
     DecimalFormat dFormat = new DecimalFormat("#0.00");
+    Color alertColor = new Color(0xFDD179);
 
     public UI(GamePanel gp) {
         this.gp = gp;
@@ -75,7 +76,7 @@ public class UI {
         g2.drawString(text, x, y);
 
         g2.setFont(arial_80);
-        g2.setColor(Color.YELLOW);
+        g2.setColor(alertColor);
 
         text = "COMPLETE";
         x = getCentreX(g2, text);

@@ -50,14 +50,16 @@ public class Player extends Entity {
     }
 
     public void getPlayerImage() {
-        up1 = setupImage("/player/boy_up_1.png");
-        up2 = setupImage("/player/boy_up_2.png");
-        down1 = setupImage("/player/boy_down_1.png");
-        down2 = setupImage("/player/boy_down_2.png");
-        left1 = setupImage("/player/boy_left_1.png");
-        left2 = setupImage("/player/boy_left_2.png");
-        right1 = setupImage("/player/boy_right_1.png");
-        right2 = setupImage("/player/boy_right_2.png");
+        String pathPrefix = "/player/player" + playerNum;
+
+        up1 = setupImage(pathPrefix + "-up1.png");
+        up2 = setupImage(pathPrefix + "-up2.png");
+        down1 = setupImage(pathPrefix + "-down1.png");
+        down2 = setupImage(pathPrefix + "-down2.png");
+        left1 = setupImage(pathPrefix + "-left1.png");
+        left2 = setupImage(pathPrefix + "-left2.png");
+        right1 = setupImage(pathPrefix + "-right1.png");
+        right2 = setupImage(pathPrefix + "-right2.png");
     }
 
     public void update() {
