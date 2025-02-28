@@ -49,6 +49,11 @@ public class Player extends Entity {
         toMove = false;
     }
 
+    public void reset() {
+        setup();
+        lightingProp.reset();
+    }
+
     public void getPlayerImage() {
         String pathPrefix = "/player/player" + playerNum;
 
