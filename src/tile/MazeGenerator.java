@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Objects;
 import java.util.Random;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -23,11 +24,11 @@ public class MazeGenerator {
 
     public static void main(String[] args) {
         System.out.println("yuh");
-        MazeGenerator mazeGen = new MazeGenerator(8, 8);
-        mazeGen.printCells();
+        MazeGenerator mazeGen = new MazeGenerator(5, 7);
+        mazeGen.printCells(mazeGen.cells);
     }
 
-    private void printCells() {
+    private void printCells(Cell[][] cells) {
         for (int r = 0; r < numRows * 2 + 1; r++) {
             for (int c = 0; c < numCols * 2 + 1; c++) {
                 boolean isWall = true;
@@ -88,6 +89,31 @@ public class MazeGenerator {
             this.r = r;
             this.c = c;
         }
+
+        @Override
+        public boolean equals(Object other) {
+            if (other == null) {
+                return false;
+            }
+
+            if (!(other instanceof Coord)) {
+                return false;
+            }
+
+            Coord otherCoord = (Coord) other;
+
+            return this.r == otherCoord.r && this.c == otherCoord.c;
+        }
+
+        @Override
+        public int hashCode() {
+            return Objects.hash(r, c);
+        }
+
+        @Override
+        public String toString() {
+            return String.format("(%d, %d)", r, c);
+        }
     }
 
     public class Cell {
@@ -115,7 +141,7 @@ public class MazeGenerator {
 
         @Override
         public String toString() {
-            return String.format("(%d, %d) <>", position.r, position.c);
+            return this.position.toString();
         }
 
         private void clearCell() {
@@ -224,7 +250,9 @@ public class MazeGenerator {
 
         Set<Coord> visitedCoords = new HashSet<>();
         List<Cell> toCarve = new ArrayList<Cell>();
-        toCarve.add(getRandomCell(newMaze, numRows, numCols));
+        Cell startCell = getRandomCell(newMaze, numRows, numCols);
+        toCarve.add(startCell);
+        visitedCoords.add(startCell.position);
 
         int count = 0;
 
@@ -240,15 +268,13 @@ public class MazeGenerator {
                     .collect(Collectors.toList());
 
             if (unvisitedNeighbours.isEmpty()) {
-                System.out.println("No unvisited neighbours");
                 toCarve.remove(curCell);
                 continue;
             }
 
-            Collections.shuffle(neighbourCoords);
-            Coord neighbourCoord = neighbourCoords.getFirst();
+            Collections.shuffle(unvisitedNeighbours);
+            Coord neighbourCoord = unvisitedNeighbours.getFirst();
             Cell neighbourCell = newMaze[neighbourCoord.r][neighbourCoord.c];
-            System.out.printf("Neighbour: %s\n", neighbourCell);
 
             // carve passage between cell and neighbour
             curCell.carvePassageTo(neighbourCell);
@@ -258,6 +284,8 @@ public class MazeGenerator {
             visitedCoords.add(neighbourCoord);
             toCarve.add(neighbourCell);
             count++;
+            this.printCells(newMaze);
+            System.out.println("");
         }
 
         return newMaze;
