@@ -4,18 +4,17 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Objects;
 import java.util.Random;
 import java.util.Set;
 import java.util.stream.Collectors;
 
 public class MazeGenerator {
-    private Cell cells[][];
+    public Cell cells[][];
     private int numRows;
     private int numCols;
     private Random random;
-    private Coord startP1;
-    private Coord startP2;
+    public Coord p1Start;
+    public Coord p2Start;
 
     public MazeGenerator(int numRows, int numCols) {
         this.numRows = numRows;
@@ -80,41 +79,6 @@ public class MazeGenerator {
                 System.out.printf(isWall ? "X " : "  ");
             }
             System.out.printf("\n");
-        }
-    }
-
-    public class Coord {
-        public int r;
-        public int c;
-
-        public Coord(int r, int c) {
-            this.r = r;
-            this.c = c;
-        }
-
-        @Override
-        public boolean equals(Object other) {
-            if (other == null) {
-                return false;
-            }
-
-            if (!(other instanceof Coord)) {
-                return false;
-            }
-
-            Coord otherCoord = (Coord) other;
-
-            return this.r == otherCoord.r && this.c == otherCoord.c;
-        }
-
-        @Override
-        public int hashCode() {
-            return Objects.hash(r, c);
-        }
-
-        @Override
-        public String toString() {
-            return String.format("(%d, %d)", r, c);
         }
     }
 
@@ -297,19 +261,19 @@ public class MazeGenerator {
             int bottomCol = random.nextInt(this.numCols);
 
             // record start coord and open up start point
-            this.startP1 = new Coord(0, topCol);
+            this.p1Start = new Coord(0, topCol);
             this.cells[0][topCol].setDirection("N", true);
 
-            this.startP2 = new Coord(this.numRows - 1, bottomCol);
+            this.p2Start = new Coord(this.numRows - 1, bottomCol);
             this.cells[this.numRows-1][bottomCol].setDirection("S", true);
         } else {
             int leftRow = random.nextInt(this.numRows);
             int rightRow = random.nextInt(this.numRows);
 
-            this.startP1 = new Coord(leftRow, 0);
+            this.p1Start = new Coord(leftRow, 0);
             this.cells[leftRow][0].setDirection("W", true);
 
-            this.startP2 = new Coord(rightRow, this.numCols - 1);
+            this.p2Start = new Coord(rightRow, this.numCols - 1);
             this.cells[rightRow][this.numCols-1].setDirection("E", true);
         }
     }

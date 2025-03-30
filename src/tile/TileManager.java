@@ -16,6 +16,7 @@ public class TileManager {
     GamePanel gp;
     public Tile[] tile;
     public int mapTileNum[][];
+    public MazeGenerator mazeGen;
 
     private final int GRASS = 0;
     private final int TREE = 1;
@@ -28,7 +29,7 @@ public class TileManager {
         mapTileNum = new int[gp.maxScreenCol][gp.maxScreenRow];
 
         getTileImage();
-        loadMap("/maps/map02.txt");
+        loadMap();
     }
 
     public void getTileImage() {
@@ -93,6 +94,63 @@ public class TileManager {
 
         } catch(Exception e) {
             e.printStackTrace();
+        }
+    }
+
+    /** Generate map */
+    public void loadMap() {
+        int numCols = (gp.maxScreenCol - 1) / 2;
+        int numRows = (gp.maxScreenRow - 1) / 2;
+        this.mazeGen = new MazeGenerator(numRows, numCols);
+
+        for (int r = 0; r < gp.maxScreenRow; r++) {
+            for (int c = 0; c < gp.maxScreenCol; c++) {
+                boolean isWall = true;
+
+                // check horizontal tunnels
+                if (r > 0 && r < numRows * 2 && r % 2 == 1) {
+                    if (c > 1) {
+                        // check if the cell on the west side extends into the east
+                        int cellR = (r - 1) / 2;
+                        int cellC = (c - 2) / 2;
+                        if (mazeGen.cells[cellR][cellC].E) {
+                            isWall = false;
+                        }
+                    }
+
+                    if (c < numCols * 2 - 1) {
+                        // check if the cell on the east side extends into the west
+                        int cellR = (r - 1) / 2;
+                        int cellC = (c + 1) / 2;
+                        if (mazeGen.cells[cellR][cellC].W) {
+                            isWall = false;
+                        }
+                    }
+                }
+
+                // check vertical tunnels
+                if (c > 0 && c < numCols * 2 && c % 2 == 1) {
+                    if (r > 1) {
+                        // check if the cell on the north side extends into the south
+                        int cellR = (r - 2) / 2;
+                        int cellC = (c - 1) / 2;
+                        if (mazeGen.cells[cellR][cellC].S) {
+                            isWall = false;
+                        }
+                    }
+
+                    if (r < numRows * 2 - 1) {
+                        // check if the cell on the south side extends into the north
+                        int cellR = (r + 1) / 2;
+                        int cellC = (c - 1) / 2;
+                        if (mazeGen.cells[cellR][cellC].N) {
+                            isWall = false;
+                        }
+                    }
+                }
+
+                mapTileNum[c][r] = isWall ? TREE : GRASS;
+            }
         }
     }
 

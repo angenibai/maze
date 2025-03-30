@@ -2,6 +2,8 @@ package entity;
 
 import item.VisionItem;
 import main.GamePanel;
+import tile.Coord;
+
 import org.yaml.snakeyaml.LoaderOptions;
 import org.yaml.snakeyaml.constructor.Constructor;
 import org.yaml.snakeyaml.Yaml;
@@ -42,15 +44,27 @@ public class EntityManager {
     }
 
     public void setupPlayer() {
-        gp.player1.startX = idxToCoord(entitiesData.p1Start.col);
-        gp.player1.startY = idxToCoord(entitiesData.p1Start.row);
-        gp.player2.startX = idxToCoord(entitiesData.p2Start.col);
-        gp.player2.startY = idxToCoord(entitiesData.p2Start.row);
+        Coord p1Start = mazeCoordToMapCoord(gp.tileM.mazeGen.p1Start);
+        Coord p2Start = mazeCoordToMapCoord(gp.tileM.mazeGen.p2Start);
+
+        gp.player1.startX = idxToCoord(p1Start.c);
+        gp.player1.startY = idxToCoord(p1Start.r);
+        gp.player2.startX = idxToCoord(p2Start.c);
+        gp.player2.startY = idxToCoord(p2Start.r);
         // where the actual player goes is handled by Player
     }
 
     private int idxToCoord(int idx) {
         return idx * gp.tileSize;
+    }
+
+    /** Terrible naming
+     * Converting the coords from the generated maze to the coords
+     * used for the actual map
+     */
+    private Coord mazeCoordToMapCoord(Coord mazeCoord) {
+        Coord mapCoord = new Coord(mazeCoord.r * 2 + 1, mazeCoord.c * 2 + 1);
+        return mapCoord;
     }
 
     public void setupItems() {

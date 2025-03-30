@@ -21,8 +21,8 @@ public class GamePanel extends JPanel implements Runnable {
     public final int scale = 3;
     public final int tileSize = originalTileSize * scale;
 
-    public final int maxScreenCol = 16;
-    public final int maxScreenRow = 12;
+    public final int maxScreenCol = 17;
+    public final int maxScreenRow = 13;
     public final int screenWidth = tileSize * maxScreenCol; // 768 px
     public final int screenHeight = tileSize * maxScreenRow; // 576 px
 
@@ -34,7 +34,7 @@ public class GamePanel extends JPanel implements Runnable {
 
     // objects
     public GameState gameState;
-    TileManager tileM = new TileManager(this);
+    public TileManager tileM = new TileManager(this);
     KeyHandler keyH = new KeyHandler(this);
     SoundPlayer soundFx = new SoundPlayer();
 
