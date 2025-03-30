@@ -14,16 +14,18 @@ public class MazeGenerator {
     private int numRows;
     private int numCols;
     private Random random;
+    private Coord startP1;
+    private Coord startP2;
 
     public MazeGenerator(int numRows, int numCols) {
         this.numRows = numRows;
         this.numCols = numCols;
         this.random = new Random();
         this.cells = generateMazeGrowingTree(numRows, numCols);
+        setStartCells();
     }
 
     public static void main(String[] args) {
-        System.out.println("yuh");
         MazeGenerator mazeGen = new MazeGenerator(5, 7);
         mazeGen.printCells(mazeGen.cells);
     }
@@ -259,7 +261,6 @@ public class MazeGenerator {
         while (!toCarve.isEmpty() && count < 40) {
             // pick a cell from toCarve
             Cell curCell = pickNextCell(toCarve);
-            System.out.println(curCell);
 
             // pick a random unvisited neighbour
             List<Coord> neighbourCoords = getNeighbourCoords(curCell);
@@ -284,11 +285,33 @@ public class MazeGenerator {
             visitedCoords.add(neighbourCoord);
             toCarve.add(neighbourCell);
             count++;
-            this.printCells(newMaze);
-            System.out.println("");
         }
 
         return newMaze;
+    }
+
+    private void setStartCells() {
+        if (random.nextInt(2) == 0) {
+            // pick start points at top and bottom rows
+            int topCol = random.nextInt(this.numCols);
+            int bottomCol = random.nextInt(this.numCols);
+
+            // record start coord and open up start point
+            this.startP1 = new Coord(0, topCol);
+            this.cells[0][topCol].setDirection("N", true);
+
+            this.startP2 = new Coord(this.numRows - 1, bottomCol);
+            this.cells[this.numRows-1][bottomCol].setDirection("S", true);
+        } else {
+            int leftRow = random.nextInt(this.numRows);
+            int rightRow = random.nextInt(this.numRows);
+
+            this.startP1 = new Coord(leftRow, 0);
+            this.cells[leftRow][0].setDirection("W", true);
+
+            this.startP2 = new Coord(rightRow, this.numCols - 1);
+            this.cells[rightRow][this.numCols-1].setDirection("E", true);
+        }
     }
 
     private Cell getRandomCell(Cell[][] maze, int numRows, int numCols) {
