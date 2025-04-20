@@ -101,6 +101,7 @@ public class TileManager {
     public void loadMap() {
         int numCols = (gp.maxScreenCol - 1) / 2;
         int numRows = (gp.maxScreenRow - 1) / 2;
+        System.out.println("cols " + numCols + " rows " + numRows);
         this.mazeGen = new MazeGenerator(numRows, numCols);
 
         for (int r = 0; r < gp.maxScreenRow; r++) {

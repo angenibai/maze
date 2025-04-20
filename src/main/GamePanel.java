@@ -131,14 +131,14 @@ public class GamePanel extends JPanel implements Runnable {
         ui.draw(g2);
 
         // DEBUG
-       long drawEnd = System.nanoTime();
-       long passed = drawEnd - drawStart;
-       if (count > 0) {
-           averageTime = (passed + averageTime * (count-1)) / count;
-           System.out.println("Average draw time " + averageTime);
-       } else {
-           System.out.println("Initial draw time " + passed);
-       }
+//       long drawEnd = System.nanoTime();
+//       long passed = drawEnd - drawStart;
+//       if (count > 0) {
+//           averageTime = (passed + averageTime * (count-1)) / count;
+//           System.out.println("Average draw time " + averageTime);
+//       } else {
+//           System.out.println("Initial draw time " + passed);
+//       }
         count++;
 
         g2.dispose();

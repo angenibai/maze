@@ -25,8 +25,7 @@ public class MazeGenerator {
     }
 
     public static void main(String[] args) {
-        MazeGenerator mazeGen = new MazeGenerator(5, 7);
-        mazeGen.printCells(mazeGen.cells);
+        MazeGenerator mazeGen = new MazeGenerator(6, 12);
     }
 
     private void printCells(Cell[][] cells) {
@@ -222,15 +221,15 @@ public class MazeGenerator {
 
         int count = 0;
 
-        while (!toCarve.isEmpty() && count < 40) {
+        while (!toCarve.isEmpty()) {
             // pick a cell from toCarve
             Cell curCell = pickNextCell(toCarve);
 
             // pick a random unvisited neighbour
             List<Coord> neighbourCoords = getNeighbourCoords(curCell);
-            List<Coord> unvisitedNeighbours = neighbourCoords.stream()
+            List<Coord> unvisitedNeighbours = new ArrayList<>(neighbourCoords.stream()
                     .filter(coord -> !visitedCoords.contains(coord))
-                    .collect(Collectors.toList());
+                    .toList());
 
             if (unvisitedNeighbours.isEmpty()) {
                 toCarve.remove(curCell);
