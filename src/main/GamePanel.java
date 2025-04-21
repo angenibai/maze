@@ -13,6 +13,8 @@ import entity.Entity;
 import entity.EntityManager;
 import entity.Player;
 import environment.EnvironmentManager;
+import tile.MazeAlgorithmOption;
+import tile.MazeManager;
 import tile.TileManager;
 
 public class GamePanel extends JPanel implements Runnable {
@@ -34,6 +36,7 @@ public class GamePanel extends JPanel implements Runnable {
 
     // objects
     public GameState gameState;
+    public MazeManager mazeManager = new MazeManager(maxScreenRow, maxScreenCol, MazeAlgorithmOption.GROWING_TREE);
     public TileManager tileM = new TileManager(this);
     KeyHandler keyH = new KeyHandler(this);
     SoundPlayer soundFx = new SoundPlayer();
@@ -65,6 +68,8 @@ public class GamePanel extends JPanel implements Runnable {
 
     public void setup() {
         gameState = GameState.PLAY;
+        mazeManager.setup();
+        tileM.setup();
         envManager.setup();
         entManager.setup();
         player1.setup();
@@ -98,10 +103,12 @@ public class GamePanel extends JPanel implements Runnable {
     }
 
     public void reset() {
-        player1.reset();
-        player2.reset();
+        mazeManager.reset();
+        tileM.reset();
         entManager.reset();
         envManager.reset();
+        player1.reset();
+        player2.reset();
         ui.reset();
     }
 

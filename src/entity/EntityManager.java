@@ -40,12 +40,13 @@ public class EntityManager {
 
     public void reset() {
         setupItems();
+        setupPlayer();
         // do i need to reset the player?
     }
 
     public void setupPlayer() {
-        Coord p1Start = mazeCoordToMapCoord(gp.tileM.mazeGen.p1Start);
-        Coord p2Start = mazeCoordToMapCoord(gp.tileM.mazeGen.p2Start);
+        Coord p1Start = gp.mazeManager.p1Start;
+        Coord p2Start = gp.mazeManager.p2Start;
 
         gp.player1.startX = idxToCoord(p1Start.c);
         gp.player1.startY = idxToCoord(p1Start.r);
@@ -54,6 +55,10 @@ public class EntityManager {
         // where the actual player goes is handled by Player
     }
 
+    /**
+     * Terrible naming
+     * Converts position as in index on grid to point coordinate on screen
+     */
     private int idxToCoord(int idx) {
         return idx * gp.tileSize;
     }
@@ -63,8 +68,7 @@ public class EntityManager {
      * used for the actual map
      */
     private Coord mazeCoordToMapCoord(Coord mazeCoord) {
-        Coord mapCoord = new Coord(mazeCoord.r * 2 + 1, mazeCoord.c * 2 + 1);
-        return mapCoord;
+        return new Coord(mazeCoord.r * 2 + 1, mazeCoord.c * 2 + 1);
     }
 
     public void setupItems() {

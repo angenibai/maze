@@ -1,0 +1,154 @@
+package tile;
+
+import java.util.Random;
+
+public class MazeManager {
+    public MazeCell[][] cells;
+    public int[][] screenTiles;
+    public MazeAlgorithm algorithm;
+    public int mazeRows;
+    public int mazeCols;
+    public final Random random;
+    // these coords line up with screen positions
+    public Coord p1Start;
+    public Coord p2Start;
+
+    public MazeManager(int screenRows, int screenCols) {
+        setScreenDimensions(screenRows, screenCols);
+        this.algorithm = new MazeAlgorithmEmpty();
+        this.random = new Random();
+    }
+
+    public MazeManager(int screenRows, int screenCols, MazeAlgorithmOption algorithmOption) {
+        setScreenDimensions(screenRows, screenCols);
+        setAlgorithm(algorithmOption);
+        this.random = new Random();
+    }
+
+    public static void main(String[] args) {
+        MazeManager mazeManager = new MazeManager(13, 25, MazeAlgorithmOption.GROWING_TREE);
+        mazeManager.setup();
+        MazeAlgorithm.printMaze(mazeManager.cells);
+    }
+
+    public void setup() {
+        this.cells = this.algorithm.generateMaze(this.mazeRows, this.mazeCols);
+        loadMazeForScreen();
+    }
+
+    public void reset() {
+        setup();
+    }
+
+    public void setScreenDimensions(int screenRows, int screenCols) {
+        assert screenRows % 2 == 1 && screenCols % 2 == 1;
+        this.mazeRows = screenToMazeIdx(screenRows);
+        this.mazeCols = screenToMazeIdx(screenCols);
+    }
+
+    public void setAlgorithm(MazeAlgorithmOption option) {
+        switch (option) {
+            case EMPTY -> this.algorithm = new MazeAlgorithmEmpty();
+            case GROWING_TREE -> this.algorithm = new MazeAlgorithmGrowingTree();
+        }
+    }
+
+    /**
+     * Sets up maze for rendering on screen
+     * Sets player start coordinates as well
+     * TODO: set power ups as well
+     */
+    public void loadMazeForScreen() {
+        setStartCoords();
+
+        int screenRows = this.mazeRows * 2 + 1;
+        int screenCols = this.mazeCols * 2 + 1;
+
+        // note screen is represented in an x/y format
+        int[][] screenTiles = new int[screenCols][screenRows];
+
+        for (int r = 0; r < screenRows; r++) {
+            for (int c = 0; c < screenCols; c++) {
+                boolean isWall = true;
+
+                // check horizontal tunnels
+                if (r < this.mazeRows * 2 && r % 2 == 1) {
+                    if (c > 1) {
+                        // check if the cell on the west side extends into the east
+                        int cellR = (r - 1) / 2;
+                        int cellC = (c - 2) / 2;
+                        if (this.cells[cellR][cellC].isDirection("E")) {
+                            isWall = false;
+                        }
+                    }
+
+                    if (c < this.mazeCols * 2 - 1) {
+                        // check if the cell on the east side extends into the west
+                        int cellR = (r - 1) / 2;
+                        int cellC = (c + 1) / 2;
+                        if (this.cells[cellR][cellC].isDirection("W")) {
+                            isWall = false;
+                        }
+                    }
+                }
+
+                // check vertical tunnels
+                if (c < this.mazeCols * 2 && c % 2 == 1) {
+                    if (r > 1) {
+                        // check if the cell on the north side extends into the south
+                        int cellR = (r - 2) / 2;
+                        int cellC = (c - 1) / 2;
+                        if (this.cells[cellR][cellC].isDirection("S")) {
+                            isWall = false;
+                        }
+                    }
+
+                    if (r < this.mazeRows * 2 - 1) {
+                        // check if the cell on the south side extends into the north
+                        int cellR = (r + 1) / 2;
+                        int cellC = (c - 1) / 2;
+                        if (this.cells[cellR][cellC].isDirection("N")) {
+                            isWall = false;
+                        }
+                    }
+                }
+
+                screenTiles[c][r] = isWall ? Tile.WALL : Tile.PATH;
+            }
+        }
+
+        this.screenTiles = screenTiles;
+    }
+
+    private int mazeToScreenIdx(int mazeIdx) {
+        return mazeIdx * 2 + 1;
+    }
+
+    private int screenToMazeIdx(int screenIdx) {
+        return (screenIdx - 1) / 2;
+    }
+
+    private void setStartCoords() {
+        if (random.nextInt(2) == 0) {
+            // pick start points at top and bottom rows
+            int topCol = random.nextInt(this.mazeRows);
+            int bottomCol = random.nextInt(this.mazeCols);
+
+            // record start coord and open up start point
+            this.p1Start = new Coord(mazeToScreenIdx(0) - 1, mazeToScreenIdx(topCol)); // change this
+            this.cells[0][topCol].setDirection("N", true);
+
+            this.p2Start = new Coord(mazeToScreenIdx(this.mazeRows - 1) + 1, mazeToScreenIdx(bottomCol));
+            this.cells[this.mazeRows-1][bottomCol].setDirection("S", true);
+        } else {
+            int leftRow = random.nextInt(this.mazeRows);
+            int rightRow = random.nextInt(this.mazeCols);
+
+            this.p1Start = new Coord(mazeToScreenIdx(leftRow), mazeToScreenIdx(0) - 1);
+            this.cells[leftRow][0].setDirection("W", true);
+
+            this.p2Start = new Coord(mazeToScreenIdx(rightRow), mazeToScreenIdx(this.mazeCols - 1) + 1);
+            this.cells[rightRow][this.mazeCols-1].setDirection("E", true);
+        }
+    }
+}
