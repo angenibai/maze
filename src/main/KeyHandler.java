@@ -8,8 +8,8 @@ import java.util.Set;
 public class KeyHandler implements KeyListener {
 
     GamePanel gp;
-    public Set<Integer> pressedMoveKeys = new HashSet<Integer>();
-    Set<Integer> validMoveKeys = new HashSet<Integer>();
+    public Set<Integer> pressedMoveKeys = new HashSet<>();
+    Set<Integer> validMoveKeys = new HashSet<>();
 
     public KeyHandler(GamePanel gp) {
         this.gp = gp;
@@ -60,9 +60,7 @@ public class KeyHandler implements KeyListener {
     public void keyReleased(KeyEvent e) {
         int code = e.getKeyCode();
 
-        if (pressedMoveKeys.contains(code)) {
-            pressedMoveKeys.remove(code);
-        }
+        pressedMoveKeys.remove(code);
     }
     
 }

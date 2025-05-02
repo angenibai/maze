@@ -25,7 +25,7 @@ public class Player extends Entity {
         this.lightingProp = new LightingProperty();
         this.toMove = false;
 
-        moveKey = new HashMap<Direction, Integer>();
+        moveKey = new HashMap<>();
         if (playerNum == 1) {
             moveKey.put(Direction.UP, KeyEvent.VK_W);
             moveKey.put(Direction.DOWN, KeyEvent.VK_S);

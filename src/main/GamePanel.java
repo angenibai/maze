@@ -46,7 +46,7 @@ public class GamePanel extends JPanel implements Runnable {
 
     public Player player1 = new Player(this, 1, keyH);
     public Player player2 = new Player(this, 2, keyH);
-    public List<Entity> items = new ArrayList<Entity>();
+    public List<Entity> items = new ArrayList<>();
 
     UI ui = new UI(this);
     public EnvironmentManager envManager = new EnvironmentManager(this);

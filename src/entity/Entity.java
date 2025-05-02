@@ -56,22 +56,12 @@ public class Entity {
     }
 
     public void draw(Graphics2D g2) {
-        BufferedImage image = null;
-
-        switch (direction) {
-            case UP:
-                image = (spriteNum == 1) ? up1 : up2;
-                break;
-            case DOWN:
-                image = (spriteNum == 1) ? down1 : down2;
-                break;
-            case LEFT:
-                image = (spriteNum == 1) ? left1 : left2;
-                break;
-            case RIGHT:
-                image = (spriteNum == 1) ? right1 : right2;
-                break;
-        }
+        BufferedImage image = switch (direction) {
+            case UP -> (spriteNum == 1) ? up1 : up2;
+            case DOWN -> (spriteNum == 1) ? down1 : down2;
+            case LEFT -> (spriteNum == 1) ? left1 : left2;
+            case RIGHT -> (spriteNum == 1) ? right1 : right2;
+        };
 
         g2.drawImage(image, x, y, null);
     }

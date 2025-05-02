@@ -76,22 +76,12 @@ public class CollisionChecker {
     public void checkBoundary(Entity entity) {
         Map<String, Integer> pos = calculatePosition(entity);
 
-        boolean boundaryCollision = false;
-
-        switch (entity.direction) {
-            case UP:
-                boundaryCollision = pos.get("topY") - entity.speed < 0;
-                break;
-            case DOWN:
-                boundaryCollision = pos.get("bottomY") + entity.speed >= gp.screenHeight;
-                break;
-            case LEFT:
-                boundaryCollision = pos.get("leftX") - entity.speed < 0;
-                break;
-            case RIGHT:
-                boundaryCollision = pos.get("rightX") + entity.speed >= gp.screenWidth;
-                break;
-        }
+        boolean boundaryCollision = switch (entity.direction) {
+            case UP -> pos.get("topY") - entity.speed < 0;
+            case DOWN -> pos.get("bottomY") + entity.speed >= gp.screenHeight;
+            case LEFT -> pos.get("leftX") - entity.speed < 0;
+            case RIGHT -> pos.get("rightX") + entity.speed >= gp.screenWidth;
+        };
 
         entity.collisionOn |= boundaryCollision;
     }

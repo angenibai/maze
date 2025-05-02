@@ -87,7 +87,7 @@ public class TileManager {
                 String line = br.readLine();
 
                 for (int col = 0; col < gp.maxScreenCol; col++) {
-                    String numbers[] = line.split(" ");
+                    String[] numbers = line.split(" ");
                     int num = Integer.parseInt(numbers[col]);
 
                     mapTileNum[col][row] = num;
