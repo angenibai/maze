@@ -1,5 +1,8 @@
 package tile;
 
+import entity.MapMetadata;
+
+import java.util.List;
 import java.util.Random;
 
 public class MazeManager {
@@ -12,6 +15,7 @@ public class MazeManager {
     // these coords line up with screen positions
     public Coord p1Start;
     public Coord p2Start;
+    public List<MapMetadata.Item> items;
 
     public MazeManager(int screenRows, int screenCols) {
         setScreenDimensions(screenRows, screenCols);
@@ -131,7 +135,7 @@ public class MazeManager {
     private void setStartCoords() {
         if (random.nextInt(2) == 0) {
             // pick start points at top and bottom rows
-            int topCol = random.nextInt(this.mazeRows);
+            int topCol = random.nextInt(this.mazeCols);
             int bottomCol = random.nextInt(this.mazeCols);
 
             // record start coord and open up start point
@@ -142,7 +146,7 @@ public class MazeManager {
             this.cells[this.mazeRows-1][bottomCol].setDirection("S", true);
         } else {
             int leftRow = random.nextInt(this.mazeRows);
-            int rightRow = random.nextInt(this.mazeCols);
+            int rightRow = random.nextInt(this.mazeRows);
 
             this.p1Start = new Coord(mazeToScreenIdx(leftRow), mazeToScreenIdx(0) - 1);
             this.cells[leftRow][0].setDirection("W", true);
@@ -150,5 +154,10 @@ public class MazeManager {
             this.p2Start = new Coord(mazeToScreenIdx(rightRow), mazeToScreenIdx(this.mazeCols - 1) + 1);
             this.cells[rightRow][this.mazeCols-1].setDirection("E", true);
         }
+    }
+
+    private void setItems() {
+        // hardcoded to 3 items
+        // split map into 3 sections and place one item in each
     }
 }
