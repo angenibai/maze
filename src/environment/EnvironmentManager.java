@@ -13,14 +13,16 @@ public class EnvironmentManager {
     }
 
     public void setup() {
-        lighting = new Lighting(gp);
+         lighting = new Lighting(gp);
     }
 
     public void update() {
-        gp.player1.lightingProp.update();
-        gp.player2.lightingProp.update();
+        if (lighting != null) {
+            gp.player1.lightingProp.update();
+            gp.player2.lightingProp.update();
+            lighting.update();
+        }
 
-        lighting.update();
     }
 
     public void draw(Graphics2D g2) {
@@ -30,7 +32,10 @@ public class EnvironmentManager {
     }
 
     public void reset() {
-        gp.player1.lightingProp.reset();
-        gp.player2.lightingProp.reset();
+        if (lighting != null) {
+            gp.player1.lightingProp.reset();
+            gp.player2.lightingProp.reset();
+        }
+
     }
 }

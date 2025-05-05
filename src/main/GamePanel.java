@@ -13,6 +13,8 @@ import entity.Entity;
 import entity.EntityManager;
 import entity.Player;
 import environment.EnvironmentManager;
+import tile.MazeAlgorithmOption;
+import tile.MazeManager;
 import tile.TileManager;
 
 public class GamePanel extends JPanel implements Runnable {
@@ -21,8 +23,8 @@ public class GamePanel extends JPanel implements Runnable {
     public final int scale = 3;
     public final int tileSize = originalTileSize * scale;
 
-    public final int maxScreenCol = 16;
-    public final int maxScreenRow = 12;
+    public final int maxScreenCol = 17;
+    public final int maxScreenRow = 13;
     public final int screenWidth = tileSize * maxScreenCol; // 768 px
     public final int screenHeight = tileSize * maxScreenRow; // 576 px
 
@@ -34,7 +36,8 @@ public class GamePanel extends JPanel implements Runnable {
 
     // objects
     public GameState gameState;
-    TileManager tileM = new TileManager(this);
+    public MazeManager mazeManager = new MazeManager(maxScreenRow, maxScreenCol, MazeAlgorithmOption.GROWING_TREE);
+    public TileManager tileM = new TileManager(this);
     KeyHandler keyH = new KeyHandler(this);
     SoundPlayer soundFx = new SoundPlayer();
 
@@ -43,7 +46,7 @@ public class GamePanel extends JPanel implements Runnable {
 
     public Player player1 = new Player(this, 1, keyH);
     public Player player2 = new Player(this, 2, keyH);
-    public List<Entity> items = new ArrayList<Entity>();
+    public List<Entity> items = new ArrayList<>();
 
     UI ui = new UI(this);
     public EnvironmentManager envManager = new EnvironmentManager(this);
@@ -65,6 +68,8 @@ public class GamePanel extends JPanel implements Runnable {
 
     public void setup() {
         gameState = GameState.PLAY;
+        mazeManager.setup();
+        tileM.setup();
         envManager.setup();
         entManager.setup();
         player1.setup();
@@ -98,10 +103,12 @@ public class GamePanel extends JPanel implements Runnable {
     }
 
     public void reset() {
-        player1.reset();
-        player2.reset();
+        mazeManager.reset();
+        tileM.reset();
         entManager.reset();
         envManager.reset();
+        player1.reset();
+        player2.reset();
         ui.reset();
     }
 
@@ -121,7 +128,11 @@ public class GamePanel extends JPanel implements Runnable {
 
         tileM.draw(g2);
 
-        for (Entity item : items) {
+        List<Entity> itemsToDraw;
+        synchronized (this) {
+            itemsToDraw = new ArrayList<>(items);
+        }
+        for (Entity item : itemsToDraw) {
             item.draw(g2);
         }
 
@@ -139,7 +150,7 @@ public class GamePanel extends JPanel implements Runnable {
 //       } else {
 //           System.out.println("Initial draw time " + passed);
 //       }
-        count++;
+//        count++;
 
         g2.dispose();
     }
