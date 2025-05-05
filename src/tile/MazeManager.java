@@ -1,7 +1,10 @@
 package tile;
 
 import entity.MapMetadata;
+import item.VisionItem;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
@@ -122,6 +125,8 @@ public class MazeManager {
         }
 
         this.screenTiles = screenTiles;
+
+        setVisionItems();
     }
 
     private int mazeToScreenIdx(int mazeIdx) {
@@ -154,6 +159,78 @@ public class MazeManager {
             this.p2Start = new Coord(mazeToScreenIdx(rightRow), mazeToScreenIdx(this.mazeCols - 1) + 1);
             this.cells[rightRow][this.mazeCols-1].setDirection("E", true);
         }
+    }
+
+    private void setVisionItems() {
+        this.items = new ArrayList<>();
+        int nItems = 3; // currently hardcoded
+
+        int screenRows = screenToMazeIdx(mazeRows);
+        int screenCols = screenToMazeIdx(mazeCols);
+
+        if (this.p1Start.r == 0) {
+            // players are top to bottom - divide map into three horizontal slices
+
+            int stepSize = screenRows / nItems;
+            int overlapSize = screenRows % nItems;
+            int windowSize = stepSize + overlapSize;
+
+            int rStart = 0;
+
+            while (rStart < screenRows - windowSize) {
+                Coord itemCoord = randomPathTileInWindow(
+                        new Coord(rStart, 0),
+                        new Coord(rStart + windowSize, screenCols - 1)
+                );
+                if (itemCoord != null) {
+                    // todo: do better than just a string
+                    this.items.add(new MapMetadata.Item("vision", itemCoord));
+                }
+                rStart += stepSize;
+            }
+
+        } else {
+            // players are left to right
+
+            int stepSize = screenCols / nItems;
+            int overlapSize = screenCols % nItems;
+            int windowSize = stepSize + overlapSize;
+
+            int cStart = 0;
+
+            while (cStart < screenCols - windowSize) {
+                Coord itemCoord = randomPathTileInWindow(
+                        new Coord(0, cStart),
+                        new Coord(screenRows - 1, cStart + windowSize)
+                );
+                if (itemCoord != null) {
+                    items.add(new MapMetadata.Item("vision", itemCoord));
+                }
+                cStart += stepSize;
+            }
+        }
+
+    }
+
+    /**
+     * Given corner coords of a window in the maze screen tiles, get a random path tile and return the coords
+     */
+    private Coord randomPathTileInWindow(Coord topLeft, Coord bottomRight) {
+        List<Coord> allPathTiles = new ArrayList<>();
+
+        for (int r = topLeft.r; r < bottomRight.r; r++) {
+            for (int c = topLeft.c; c< bottomRight.c; c++) {
+                if (this.screenTiles[r][c] == Tile.PATH) {
+                    allPathTiles.add(new Coord(r, c));
+                }
+            }
+        }
+
+        if (allPathTiles.isEmpty()) {
+            return null;
+        }
+
+        return allPathTiles.get(random.nextInt(allPathTiles.size()));
     }
 
     private void setItems() {

@@ -20,7 +20,7 @@ public class EntityManager {
 
     public EntityManager(GamePanel gp) {
         this.gp = gp;
-        loadMeta("/maps/map02_meta.yaml");
+//        loadMeta("/maps/map02_meta.yaml");
     }
 
     public void loadMeta(String filePath) {
@@ -72,14 +72,14 @@ public class EntityManager {
     }
 
     public void setupItems() {
-        for (MapMetadata.Item itemData : entitiesData.items) {
+        for (MapMetadata.Item itemData : gp.mazeManager.items) {
             Entity newItem = null;
             if (itemData.type.equals("vision")) {
                 newItem = new VisionItem(gp);
             }
             if (newItem != null) {
-                newItem.startX = idxToCoord(itemData.pos.col);
-                newItem.startY = idxToCoord(itemData.pos.row);
+                newItem.startX = idxToCoord(itemData.pos.c);
+                newItem.startY = idxToCoord(itemData.pos.r);
                 newItem.setup();
                 gp.items.add(newItem);
             }
