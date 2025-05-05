@@ -167,7 +167,6 @@ public class MazeManager {
 
         int screenRows = mazeToScreenIdx(this.mazeRows);
         int screenCols = mazeToScreenIdx(this.mazeCols);
-        System.out.println("rows: " + screenRows + " cols: " + screenCols);
 
         if (this.p1Start.r == 0) {
             // players are top to bottom - divide map into three horizontal slices
@@ -177,11 +176,8 @@ public class MazeManager {
             int windowSize = stepSize + overlapSize;
 
             int rStart = 0;
-            System.out.println("top to bottom");
-            System.out.println("stepSize: " + stepSize + " overlapSize: " + overlapSize + " windowSize " + windowSize);
 
             while (rStart <= screenRows - windowSize) {
-                System.out.println("rStart: " + rStart);
                 Coord itemCoord = randomPathTileInWindow(
                         new Coord(rStart, 0),
                         new Coord(rStart + windowSize, screenCols - 1)
@@ -201,11 +197,8 @@ public class MazeManager {
             int windowSize = stepSize + overlapSize;
 
             int cStart = 0;
-            System.out.println("left to right");
-            System.out.println("stepSize: " + stepSize + " overlapSize: " + overlapSize + " windowSize " + windowSize);
 
             while (cStart <= screenCols - windowSize) {
-                System.out.println("cStart: " + cStart);
                 Coord itemCoord = randomPathTileInWindow(
                         new Coord(0, cStart),
                         new Coord(screenRows - 1, cStart + windowSize)
