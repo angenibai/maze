@@ -232,9 +232,4 @@ public class MazeManager {
 
         return allPathTiles.get(random.nextInt(allPathTiles.size()));
     }
-
-    private void setItems() {
-        // hardcoded to 3 items
-        // split map into 3 sections and place one item in each
-    }
 }
