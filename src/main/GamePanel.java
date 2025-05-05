@@ -128,7 +128,11 @@ public class GamePanel extends JPanel implements Runnable {
 
         tileM.draw(g2);
 
-        for (Entity item : items) {
+        List<Entity> itemsToDraw;
+        synchronized (this) {
+            itemsToDraw = new ArrayList<>(items);
+        }
+        for (Entity item : itemsToDraw) {
             item.draw(g2);
         }
 
@@ -146,7 +150,7 @@ public class GamePanel extends JPanel implements Runnable {
 //       } else {
 //           System.out.println("Initial draw time " + passed);
 //       }
-        count++;
+//        count++;
 
         g2.dispose();
     }
