@@ -72,6 +72,7 @@ public class EntityManager {
     }
 
     public void setupItems() {
+        gp.items.clear();
         for (MapMetadata.Item itemData : gp.mazeManager.items) {
             Entity newItem = null;
             if (itemData.type.equals("vision")) {
