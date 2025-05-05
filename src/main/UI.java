@@ -70,7 +70,7 @@ public class UI {
 
         g2.setFont(arial_32);
 
-        text = "<r>estart";
+        text = "<n>ext maze";
         x = getCentreX(g2, text);
         y = gp.screenHeight / 2 + 94;
         g2.drawString(text, x, y);

@@ -42,7 +42,7 @@ public class KeyHandler implements KeyListener {
                 default:
                     break;
             }
-        } else if (code == KeyEvent.VK_R) {
+        } else if (code == KeyEvent.VK_N) {
             switch (gp.gameState) {
                 case END:
                     gp.reset();
