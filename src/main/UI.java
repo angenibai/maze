@@ -5,6 +5,7 @@ import java.awt.Font;
 import java.awt.Graphics2D;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class UI {
@@ -83,14 +84,14 @@ public class UI {
         g2.setColor(headingColor);
         String text = "COMPLETE";
         int x = getCentreX(g2, text);
-        int y = 130;
+        int y = 120;
         g2.drawString(text, x, y);
 
         g2.setFont(arial_40);
         boolean newScoreDrawn = false;
         for (int i = 0; i < MAX_LEADERBOARD; i++) {
             g2.setColor(textColor);
-            y = 190 + i * 56;
+            y = 180 + i * 56;
 
             // score if it exists
             if (i < leaderboard.size()) {
@@ -115,7 +116,13 @@ public class UI {
             for (int i = MAX_LEADERBOARD; i < leaderboard.size(); i++) {
                 if (leaderboard.get(i).equals(playTime)) {
                     g2.setColor(highlightColor);
-                    y = 190 + 5 * 56;
+
+                    y = 180 + 4 * 56 + 36;
+                    text = "-------";
+                    x = getCentreX(g2, text);
+                    g2.drawString(text, x, y);
+
+                    y += 40;
                     x = rankTextX;
                     text = String.format("%d.", i+1);
                     g2.drawString(text, x, y);
@@ -127,15 +134,12 @@ public class UI {
             }
         }
 
-
         g2.setFont(arial_32);
         g2.setColor(textColor);
         text = "<n>ext maze";
         x = gp.screenWidth / 2 + 130;
         y = 514;
         g2.drawString(text, x, y);
-
-
     }
 
     private int getCentreX(Graphics2D g2, String text) {
