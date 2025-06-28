@@ -2,14 +2,15 @@ package main;
 
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 public class KeyHandler implements KeyListener {
+    private static final List<Integer> kxg = List.of(KeyEvent.VK_K, KeyEvent.VK_X, KeyEvent.VK_G);
 
     GamePanel gp;
     public Set<Integer> pressedMoveKeys = new HashSet<>();
     Set<Integer> validMoveKeys = new HashSet<>();
+    List<Integer> last3KeysList = new ArrayList<>();
 
     public KeyHandler(GamePanel gp) {
         this.gp = gp;
@@ -54,6 +55,11 @@ public class KeyHandler implements KeyListener {
         } else if (validMoveKeys.contains(code)) {
             pressedMoveKeys.add(code);
         }
+
+        updateLast3Keys(code);
+        if (last3KeysList.equals(kxg)) {
+            gp.player2.togglePlayerImage(2, 3);
+        }
     }
 
     @Override
@@ -62,5 +68,11 @@ public class KeyHandler implements KeyListener {
 
         pressedMoveKeys.remove(code);
     }
-    
+
+    private void updateLast3Keys(int newKey) {
+        last3KeysList.add(newKey);
+        if (last3KeysList.size() > 3) {
+            last3KeysList.removeFirst();
+        }
+    }
 }

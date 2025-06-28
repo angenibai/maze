@@ -14,6 +14,7 @@ import main.KeyHandler;
 public class Player extends Entity {
     public boolean toMove;
     public int playerNum;
+    public int playerImageId;
     public Map<Direction, Integer> moveKey;
     public LightingProperty lightingProp;
     KeyHandler keyH;
@@ -21,6 +22,7 @@ public class Player extends Entity {
     public Player(GamePanel gp, int playerNum, KeyHandler keyH) {
         super(gp);
         this.playerNum = playerNum;
+        this.playerImageId = playerNum;
         this.keyH = keyH;
         this.lightingProp = new LightingProperty();
         this.toMove = false;
@@ -38,7 +40,7 @@ public class Player extends Entity {
             moveKey.put(Direction.RIGHT, KeyEvent.VK_RIGHT);
         }
 
-        getPlayerImage();
+        getPlayerImage(playerImageId);
     }
 
     public void setup() {
@@ -54,8 +56,8 @@ public class Player extends Entity {
         lightingProp.reset();
     }
 
-    public void getPlayerImage() {
-        String pathPrefix = "/player/player" + playerNum;
+    private void getPlayerImage(int imageId) {
+        String pathPrefix = "/player/player" + imageId;
 
         up1 = setupImage(pathPrefix + "-up1.png");
         up2 = setupImage(pathPrefix + "-up2.png");
@@ -65,6 +67,11 @@ public class Player extends Entity {
         left2 = setupImage(pathPrefix + "-left2.png");
         right1 = setupImage(pathPrefix + "-right1.png");
         right2 = setupImage(pathPrefix + "-right2.png");
+    }
+
+    public void togglePlayerImage(int imageId1, int imageId2) {
+        playerImageId = playerImageId == imageId1 ? imageId2 : imageId1;
+        getPlayerImage(playerImageId);
     }
 
     public void update() {
