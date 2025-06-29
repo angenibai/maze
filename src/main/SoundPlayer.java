@@ -14,7 +14,7 @@ public class SoundPlayer {
 
     // if I end up needing two instances of sound player, it would be good to abstract out the loading of the sound clips
     public SoundPlayer() {
-        soundUrlMap.put(Sound.PICKUP, getClass().getResource("/sound/pickup-2.wav"));
+        soundUrlMap.put(Sound.PICKUP, getClass().getResource("/sound/munch.wav"));
         soundUrlMap.put(Sound.WIN, getClass().getResource("/sound/win.wav"));
     }
 
