@@ -23,6 +23,7 @@ public class UI {
     Color textColor = new Color(0xFFFFFF);
     List<Double> leaderboard;
     GameState prevGameState;
+    public boolean newHighScore = false;
 
     public UI(GamePanel gp) {
         this.gp = gp;
@@ -89,6 +90,7 @@ public class UI {
 
         g2.setFont(arial_40);
         boolean newScoreDrawn = false;
+        newHighScore = false;
         for (int i = 0; i < MAX_LEADERBOARD; i++) {
             g2.setColor(textColor);
             y = 180 + i * 56;
@@ -101,6 +103,9 @@ public class UI {
                 if (leaderboard.get(i).equals(playTime)) {
                     newScoreDrawn = true;
                     g2.setColor(highlightColor);
+                    if (i == 0) {
+                        newHighScore = true;
+                    }
                 }
 
                 g2.drawString(text, x, y);
