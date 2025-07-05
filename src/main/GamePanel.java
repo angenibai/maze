@@ -31,15 +31,15 @@ public class GamePanel extends JPanel implements Runnable {
     // time consts
     final int secondInNano = 1000000000;
     public final int FPS = 60;
-    int count = 0;
-    long averageTime = 0;
 
     // objects
     public GameState gameState;
     public MazeManager mazeManager = new MazeManager(maxScreenRow, maxScreenCol, MazeAlgorithmOption.GROWING_TREE);
     public TileManager tileM = new TileManager(this);
     KeyHandler keyH = new KeyHandler(this);
-    SoundPlayer soundFx = new SoundPlayer();
+    SoundLoader soundLoader = new SoundLoader();
+    SoundPlayer soundFx = new SoundPlayer(soundLoader);
+    SoundPlayer soundMusic = new SoundPlayer(soundLoader);
 
     Thread gameThread;
     public CollisionChecker cChecker = new CollisionChecker(this);
@@ -52,6 +52,7 @@ public class GamePanel extends JPanel implements Runnable {
     public EnvironmentManager envManager = new EnvironmentManager(this);
     EntityManager entManager = new EntityManager(this);
 
+    Sound curMusic;
 
     public GamePanel() {
         this.setPreferredSize(new Dimension(screenWidth, screenHeight));
@@ -74,6 +75,7 @@ public class GamePanel extends JPanel implements Runnable {
         entManager.setup();
         player1.setup();
         player2.setup();
+        playMusic(Sound.THEME);
     }
 
     @Override
@@ -110,6 +112,14 @@ public class GamePanel extends JPanel implements Runnable {
         player1.reset();
         player2.reset();
         ui.reset();
+
+        if (ui.newHighScore && curMusic.equals(Sound.THEME)) {
+            stopMusic();
+            playMusic(Sound.THEME_FAST);
+        } else if (!ui.newHighScore && curMusic.equals(Sound.THEME_FAST)) {
+            stopMusic();
+            playMusic(Sound.THEME);
+        }
     }
 
     public void update() {
@@ -123,8 +133,6 @@ public class GamePanel extends JPanel implements Runnable {
         super.paintComponent(g);
 
         Graphics2D g2 = (Graphics2D) g;
-
-        long drawStart = System.nanoTime();
 
         tileM.draw(g2);
 
@@ -141,18 +149,18 @@ public class GamePanel extends JPanel implements Runnable {
         envManager.draw(g2);
         ui.draw(g2);
 
-        // DEBUG
-//       long drawEnd = System.nanoTime();
-//       long passed = drawEnd - drawStart;
-//       if (count > 0) {
-//           averageTime = (passed + averageTime * (count-1)) / count;
-//           System.out.println("Average draw time " + averageTime);
-//       } else {
-//           System.out.println("Initial draw time " + passed);
-//       }
-//        count++;
-
         g2.dispose();
+    }
+
+    public void playMusic(Sound sound) {
+        curMusic = sound;
+        soundMusic.setFile(sound);
+        soundMusic.play();
+        soundMusic.loop();
+    }
+
+    public void stopMusic() {
+        soundMusic.stop();
     }
 
     public void playFx(Sound sound) {

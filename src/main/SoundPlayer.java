@@ -10,17 +10,16 @@ import javax.sound.sampled.Clip;
 
 public class SoundPlayer {
     Clip clip;
-    Map<Sound, URL> soundUrlMap = new HashMap<>();
+    SoundLoader soundLoader;
 
     // if I end up needing two instances of sound player, it would be good to abstract out the loading of the sound clips
-    public SoundPlayer() {
-        soundUrlMap.put(Sound.PICKUP, getClass().getResource("/sound/munch.wav"));
-        soundUrlMap.put(Sound.WIN, getClass().getResource("/sound/win.wav"));
+    public SoundPlayer(SoundLoader soundLoader) {
+        this.soundLoader = soundLoader;
     }
 
     public void setFile(Sound sound) {
         try {
-            AudioInputStream ais = AudioSystem.getAudioInputStream(soundUrlMap.get(sound));
+            AudioInputStream ais = AudioSystem.getAudioInputStream(soundLoader.get(sound));
             clip = AudioSystem.getClip();
             clip.open(ais);
         } catch (Exception e) {

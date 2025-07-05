@@ -1,5 +1,5 @@
 package main;
 
 public enum Sound {
-    WIN, PICKUP
+    WIN, PICKUP, THEME, THEME_FAST
 }
