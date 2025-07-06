@@ -35,6 +35,7 @@ bin/
 build/
 /bin1/
 java/build/**
+dist/
 
 # Windows
 **Zone.Identifier

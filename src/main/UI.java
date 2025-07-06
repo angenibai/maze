@@ -162,7 +162,7 @@ public class UI {
     private List<Double> newLeaderboard(Double newTime) {
         List<Double> newLeaderboard = new ArrayList<>(this.leaderboard);
         newLeaderboard.add(newTime);
-        newLeaderboard.sort((x, y) -> (int) (x - y));
+        newLeaderboard.sort(Double::compareTo);
         return newLeaderboard;
     }
 }
