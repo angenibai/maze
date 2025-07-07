@@ -12,7 +12,6 @@ public class SoundPlayer {
     Clip clip;
     SoundLoader soundLoader;
 
-    // if I end up needing two instances of sound player, it would be good to abstract out the loading of the sound clips
     public SoundPlayer(SoundLoader soundLoader) {
         this.soundLoader = soundLoader;
     }

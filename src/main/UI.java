@@ -1,20 +1,21 @@
 package main;
 
-import java.awt.Color;
-import java.awt.Font;
-import java.awt.Graphics2D;
+import java.awt.*;
+import java.io.IOException;
+import java.io.InputStream;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class UI {
     private static final int MAX_LEADERBOARD = 5;
 
     GamePanel gp;
-    Font arial_32;
-    Font arial_40;
-    Font arial_64;
+    String fontName;
+    Font baseFont;
+    Font text_32;
+    Font text_40;
+    Font text_64;
     int rankTextX;
     Double playTime;
     DecimalFormat dFormat = new DecimalFormat("#0.00");
@@ -27,18 +28,33 @@ public class UI {
 
     public UI(GamePanel gp) {
         this.gp = gp;
+        try {
+            loadFont();
+        } catch (Exception e) {
+            System.err.println("Error loading font");
+        }
 
-        arial_32 = new Font("Arial", Font.PLAIN, 32);
-        arial_40 = new Font("Arial", Font.PLAIN, 40);
-        arial_64 = new Font("Arial", Font.PLAIN, 64);
-        rankTextX = gp.screenWidth / 2 - 100;
+        text_32 = baseFont.deriveFont(Font.PLAIN, 32);
+        text_40 = baseFont.deriveFont(Font.PLAIN, 40);
+        text_64 = baseFont.deriveFont(Font.PLAIN, 64);
+        rankTextX = gp.screenWidth / 2 - 130;
         playTime = 0.0;
         leaderboard = new ArrayList<Double>();
         prevGameState = gp.gameState;
     }
 
+    private void loadFont() throws IOException, FontFormatException {
+        InputStream fontStream = getClass().getResourceAsStream("/font/Silkscreen.ttf");
+        if (fontStream == null) {
+            System.out.println("Did not load font");
+            baseFont = Font.getFont("Arial");
+        } else {
+            baseFont = Font.createFont(Font.TRUETYPE_FONT, fontStream);
+        }
+    }
+
     public void draw(Graphics2D g2) {
-        g2.setFont(arial_40);
+        g2.setFont(text_40);
         g2.setColor(textColor);
 
         switch (gp.gameState) {
@@ -67,11 +83,11 @@ public class UI {
     public void drawPlayState(Graphics2D g2) {
         playTime += (double) 1/gp.FPS;
 
-        g2.drawString("Time: "+dFormat.format(playTime), gp.tileSize*(gp.maxScreenCol-5), 65);
+        g2.drawString("Time: "+dFormat.format(playTime), gp.tileSize*(gp.maxScreenCol-6), 65);
     }
 
     public void drawPauseState(Graphics2D g2) {
-        g2.setFont(arial_64);
+        g2.setFont(text_64);
 
         String text = "PAUSED";
         int x = getCentreX(g2, text);
@@ -81,14 +97,14 @@ public class UI {
     }
 
     public void drawEndState(Graphics2D g2) {
-        g2.setFont(arial_64);
+        g2.setFont(text_64);
         g2.setColor(headingColor);
         String text = "COMPLETE";
         int x = getCentreX(g2, text);
         int y = 120;
         g2.drawString(text, x, y);
 
-        g2.setFont(arial_40);
+        g2.setFont(text_40);
         boolean newScoreDrawn = false;
         newHighScore = false;
         for (int i = 0; i < MAX_LEADERBOARD; i++) {
@@ -139,11 +155,11 @@ public class UI {
             }
         }
 
-        g2.setFont(arial_32);
+        g2.setFont(text_32);
         g2.setColor(textColor);
         text = "<n>ext maze";
-        x = gp.screenWidth / 2 + 130;
-        y = 514;
+        x = gp.screenWidth / 2 + 110;
+        y = 530;
         g2.drawString(text, x, y);
     }
 
@@ -154,7 +170,7 @@ public class UI {
     }
 
     private int getScoreX(Graphics2D g2, String text) {
-        int rightTarget = gp.screenWidth / 2 + 90;
+        int rightTarget = gp.screenWidth / 2 + 120;
         int length = (int) g2.getFontMetrics().getStringBounds(text, g2).getWidth();
         return rightTarget - length;
     }
