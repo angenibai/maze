@@ -1,8 +1,8 @@
-# maze
+# Chomp - A Maze Game 🥕
 
-![Two players in a dark maze](./assets/maze-start.png)
+![Two players in a dark maze](./assets/maze-walking-3.png)
 
-Two fellas/fellases find one another in dark mazes.
+Imagine Fireboy and Watergirl getting lost in endless mazes. That's basically this game. Enjoy :D
 
 ### Music + sound
 
