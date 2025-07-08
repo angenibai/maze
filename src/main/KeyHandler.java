@@ -32,25 +32,16 @@ public class KeyHandler implements KeyListener {
     public void keyPressed(KeyEvent e) {
         int code = e.getKeyCode();
 
-        if (code == KeyEvent.VK_P) {
+        if (code == KeyEvent.VK_SPACE) {
             switch (gp.gameState) {
-                case PLAY:
-                    gp.gameState = GameState.PAUSE;
-                    break;
-                case PAUSE:
-                    gp.gameState = GameState.PLAY;
-                    break;
-                default:
-                    break;
+                case START -> gp.setupPlay();
+                case PLAY -> gp.gameState = GameState.PAUSE;
+                case PAUSE -> gp.gameState = GameState.PLAY;
             }
         } else if (code == KeyEvent.VK_N) {
-            switch (gp.gameState) {
-                case END:
-                    gp.reset();
-                    gp.gameState = GameState.PLAY;
-                    break;
-                default:
-                    break;
+            if (Objects.requireNonNull(gp.gameState) == GameState.END) {
+                gp.reset();
+                gp.gameState = GameState.PLAY;
             }
         } else if (validMoveKeys.contains(code)) {
             pressedMoveKeys.add(code);
