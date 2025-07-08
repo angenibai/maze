@@ -2,7 +2,7 @@
 
 jpackage --input bin/ \
   --name "chomp" \
-  --main-jar chomp-0.4.0.jar \
+  --main-jar chomp-1.0.jar \
   --main-class main.Main \
   --type dmg \
   --mac-package-identifier com.angenibai.chomp \
