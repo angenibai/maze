@@ -11,11 +11,11 @@ public class UI {
     private static final int MAX_LEADERBOARD = 5;
 
     GamePanel gp;
-    String fontName;
     Font baseFont;
     Font text_32;
     Font text_40;
     Font text_64;
+    Font text_title;
     int rankTextX;
     Double playTime;
     DecimalFormat dFormat = new DecimalFormat("#0.00");
@@ -37,6 +37,7 @@ public class UI {
         text_32 = baseFont.deriveFont(Font.PLAIN, 32);
         text_40 = baseFont.deriveFont(Font.PLAIN, 40);
         text_64 = baseFont.deriveFont(Font.PLAIN, 64);
+        text_title = baseFont.deriveFont(Font.PLAIN, 120);
         rankTextX = gp.screenWidth / 2 - 130;
         playTime = 0.0;
         leaderboard = new ArrayList<Double>();
@@ -58,26 +59,43 @@ public class UI {
         g2.setColor(textColor);
 
         switch (gp.gameState) {
-            case PLAY:
-                drawPlayState(g2);
-                break;
-            case PAUSE:
-                drawPauseState(g2);
-                break;
-            case END:
+            case START -> drawTitleState(g2);
+            case PLAY -> drawPlayState(g2);
+            case PAUSE -> drawPauseState(g2);
+            case END -> {
                 if (prevGameState.equals(GameState.PLAY)) {
                     leaderboard = newLeaderboard(playTime);
                 }
                 drawEndState(g2);
-                break;
-            default:
-                break;
+            }
         }
         prevGameState = gp.gameState;
     }
 
     public void reset() {
         playTime = 0.0;
+    }
+
+    public void drawTitleState(Graphics2D g2) {
+        g2.setColor(Color.BLACK);
+        g2.fillRect(0, 0, gp.screenWidth, gp.screenHeight);
+
+        g2.setColor(textColor);
+        g2.setFont(text_title);
+        String text = "CHOMP";
+        int x = getCentreX(g2, text);
+        int y = gp.screenHeight / 2 - 96;
+        g2.drawString(text, x, y);
+
+        g2.setColor(highlightColor);
+        g2.setFont(text_64);
+        text = "A Maze Game";
+        g2.drawString(text, getCentreX(g2, text), gp.screenHeight / 2 - 20);
+
+        g2.setColor(textColor);
+        g2.setFont(text_32);
+        text = "<space> to start";
+        g2.drawString(text, getCentreX(g2, text), gp.screenHeight / 2 + 130);
     }
 
     public void drawPlayState(Graphics2D g2) {

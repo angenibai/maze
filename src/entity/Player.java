@@ -3,6 +3,7 @@ package entity;
 import java.awt.event.KeyEvent;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 import environment.LightingProperty;
 import main.Direction;
@@ -75,7 +76,7 @@ public class Player extends Entity {
     }
 
     public void update() {
-        if (gp.gameState != GameState.PLAY) {
+        if (!Set.of(GameState.START, GameState.PLAY).contains(gp.gameState)) {
             return;
         }
 

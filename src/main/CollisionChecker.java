@@ -34,6 +34,7 @@ public class CollisionChecker {
     }
 
     public void checkTile(Entity entity) {
+        if (gp.gameState != GameState.PLAY) { return; }
         Map<String, Integer> pos = calculatePosition(entity);
 
         int tileNum1, tileNum2;
@@ -86,9 +87,14 @@ public class CollisionChecker {
         entity.collisionOn |= boundaryCollision;
     }
 
+    /**
+     * Check if player has collided with any of the items
+     * @param player
+     * @return the collided item
+     */
     public Entity checkItems(Player player) {
-        // Check if player has collided with any of the items
-        // return the collided item
+        if (gp.gameState != GameState.PLAY) { return null; }
+
         Entity collided = null;
 
         for (Entity item : gp.items) {

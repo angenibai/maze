@@ -6,6 +6,7 @@ import java.awt.Graphics2D;
 import java.awt.Color;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import javax.swing.JPanel;
 
@@ -68,6 +69,18 @@ public class GamePanel extends JPanel implements Runnable {
     }
 
     public void setup() {
+        gameState = GameState.START;
+        int playersY = screenHeight / 2 + 30;
+        player1.startX = screenWidth / 2 - tileSize - 16;
+        player1.startY = playersY;
+        player2.startX = screenWidth / 2 + 16;
+        player2.startY = playersY;
+        player1.setup();
+        player2.setup();
+        playMusic(Sound.TITLE_THEME);
+    }
+
+    public void setupPlay() {
         gameState = GameState.PLAY;
         mazeManager.setup();
         tileM.setup();
@@ -75,6 +88,7 @@ public class GamePanel extends JPanel implements Runnable {
         entManager.setup();
         player1.setup();
         player2.setup();
+        stopMusic();
         playMusic(Sound.THEME);
     }
 
@@ -125,8 +139,10 @@ public class GamePanel extends JPanel implements Runnable {
     public void update() {
         player1.update();
         player2.update();
-        envManager.update();
-        cChecker.checkEnd(player1, player2);
+        if (gameState != GameState.START) {
+            envManager.update();
+            cChecker.checkEnd(player1, player2);
+        }
     }
 
     public void paintComponent(Graphics g) {
@@ -134,20 +150,26 @@ public class GamePanel extends JPanel implements Runnable {
 
         Graphics2D g2 = (Graphics2D) g;
 
-        tileM.draw(g2);
+        if (Objects.requireNonNull(gameState) == GameState.START) {
+            ui.draw(g2);
+            player1.draw(g2);
+            player2.draw(g2);
+        } else {
+            tileM.draw(g2);
 
-        List<Entity> itemsToDraw;
-        synchronized (this) {
-            itemsToDraw = new ArrayList<>(items);
-        }
-        for (Entity item : itemsToDraw) {
-            item.draw(g2);
-        }
+            List<Entity> itemsToDraw;
+            synchronized (this) {
+                itemsToDraw = new ArrayList<>(items);
+            }
+            for (Entity item : itemsToDraw) {
+                item.draw(g2);
+            }
 
-        player1.draw(g2);
-        player2.draw(g2);
-        envManager.draw(g2);
-        ui.draw(g2);
+            player1.draw(g2);
+            player2.draw(g2);
+            envManager.draw(g2);
+            ui.draw(g2);
+        }
 
         g2.dispose();
     }

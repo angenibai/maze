@@ -12,6 +12,7 @@ public class SoundLoader {
         soundUrlMap.put(Sound.WIN, getClass().getResource("/sound/win.wav"));
         soundUrlMap.put(Sound.THEME, getClass().getResource("/sound/melancholic-walk.wav"));
         soundUrlMap.put(Sound.THEME_FAST, getClass().getResource("/sound/trippy-trip-trop.wav"));
+        soundUrlMap.put(Sound.TITLE_THEME, getClass().getResource("/sound/ooh-a-fly.wav"));
     }
 
     public URL get(Sound sound) {
