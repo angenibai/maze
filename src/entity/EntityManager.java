@@ -12,25 +12,13 @@ import java.io.InputStream;
 
 public class EntityManager {
     /**
-     * Manages the information about entities from the metadata json file
+     * Manages the information about entities that has been set up by a MazeManager instance
      */
 
     GamePanel gp;
-    MapMetadata entitiesData;
 
     public EntityManager(GamePanel gp) {
         this.gp = gp;
-//        loadMeta("/maps/map02_meta.yaml");
-    }
-
-    public void loadMeta(String filePath) {
-        try {
-            Yaml yaml = new Yaml(new Constructor(MapMetadata.class, new LoaderOptions()));
-            InputStream is = getClass().getResourceAsStream(filePath);
-            entitiesData = yaml.load(is);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
     }
 
     public void setup() {
@@ -41,7 +29,6 @@ public class EntityManager {
     public void reset() {
         setupItems();
         setupPlayer();
-        // do i need to reset the player?
     }
 
     public void setupPlayer() {

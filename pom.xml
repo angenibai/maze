@@ -7,14 +7,6 @@
     <artifactId>chomp</artifactId>
     <version>1.0</version>
 
-    <dependencies>
-        <dependency>
-            <groupId>org.yaml</groupId>
-            <artifactId>snakeyaml</artifactId>
-            <version>2.3</version>
-        </dependency>
-    </dependencies>
-
     <build>
         <directory>bin</directory>
         <sourceDirectory>src</sourceDirectory>

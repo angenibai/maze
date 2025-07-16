@@ -11,18 +11,6 @@ public class MazeCell {
         clearCell();
     }
 
-    public MazeCell(String direction) {
-        clearCell();
-        setDirection(direction, true);
-    }
-
-    public MazeCell(String[] directions) {
-        clearCell();
-        for (String d : directions) {
-            setDirection(d, true);
-        }
-    }
-
     @Override
     public String toString() {
         return this.position.toString();

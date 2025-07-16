@@ -62,8 +62,7 @@ public class MazeManager {
 
     /**
      * Sets up maze for rendering on screen
-     * Sets player start coordinates as well
-     * TODO: set power ups as well
+     * Sets player start coordinates and power ups as well
      */
     public void loadMazeForScreen() {
         setStartCoords();

@@ -8,6 +8,7 @@ import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.util.Objects;
 
 public class Entity {
     public GamePanel gp;
@@ -33,7 +34,7 @@ public class Entity {
     public BufferedImage setupImage(String filePath) {
         BufferedImage image = null;
         try {
-            image = ImageIO.read(getClass().getResourceAsStream(filePath));
+            image = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream(filePath)));
             image = UtilityTool.scaleImage(image, gp.tileSize, gp.tileSize);
         } catch (IOException e) {
             e.printStackTrace();
